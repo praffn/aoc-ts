@@ -1,4 +1,3 @@
-import { createInterface, Interface } from "node:readline";
 import { createReadStream, ReadStream } from "node:fs";
 import { Readable, Stream } from "node:stream";
 
