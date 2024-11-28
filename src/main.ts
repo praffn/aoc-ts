@@ -71,9 +71,13 @@ async function run() {
 
     try {
       const lineReader = createLineReader(args.input);
+
+      const start = getNanoseconds();
       const solution = await solver(lineReader);
+      const end = getNanoseconds();
+      const elapsed = (end - start) / 1e6;
       lineReader.close();
-      prettyPrintSolution(solution, year, day, 0);
+      prettyPrintSolution(solution, year, day, elapsed);
     } catch (e) {
       console.error(e);
     }
@@ -83,6 +87,11 @@ async function run() {
     );
     process.exit(1);
   }
+}
+
+function getNanoseconds(): number {
+  const [seconds, nanoseconds] = process.hrtime();
+  return seconds * 1e9 + nanoseconds;
 }
 
 run();
