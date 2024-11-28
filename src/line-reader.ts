@@ -37,7 +37,10 @@ export function createLineReader(filename: string): LineReader {
           buf = buf.substring(eolIndex + 1);
         }
       }
-      yield buf;
+
+      if (buf.length > 0) {
+        yield buf;
+      }
     },
   };
 }
