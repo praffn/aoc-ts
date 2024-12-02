@@ -43,3 +43,16 @@ export function createLineReader(filename: string): LineReader {
     },
   };
 }
+
+export function createLineReaderFromString(str: string): LineReader {
+  return {
+    close() {
+      // no-op
+    },
+    async *[Symbol.asyncIterator](): AsyncIterableIterator<string> {
+      for (const line of str.split("\n")) {
+        yield line;
+      }
+    },
+  };
+}

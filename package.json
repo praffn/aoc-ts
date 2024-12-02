@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "aoc": "tsx src/main.ts"
+    "aoc": "tsx src/main.ts",
+    "test": "node --import tsx --test **/*.test.ts"
   },
   "keywords": [],
   "author": "",
