@@ -9,7 +9,7 @@ const input = `3   4
 3   9
 3   3`;
 
-test("2024.01 - 1", async (t) => {
+test("2024.01", async (t) => {
   const lineReader = createLineReaderFromString(input);
   const result = await solver(lineReader);
 
