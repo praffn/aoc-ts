@@ -1,3 +1,4 @@
+import { create } from "node:domain";
 import { LineReader } from "./line-reader";
 import chalk from "chalk";
 
@@ -39,6 +40,16 @@ export function createSolverWithLineArray(
     }
     return solver(lines);
   };
+
+  return createSolver(wrappedSolver);
+}
+
+export function createSolverWithString(
+  solver: (input: string) => Promise<Solution>
+): Solver {
+  const wrappedSolver = createSolverWithLineArray(async (lines) => {
+    return solver(lines.join());
+  });
 
   return createSolver(wrappedSolver);
 }
