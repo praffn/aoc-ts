@@ -1,3 +1,4 @@
+import { isMonotonic } from "../../lib/iter";
 import { createSolver } from "../../solution";
 
 function interdifference(ns: Array<number>): Array<number> {
@@ -7,18 +8,6 @@ function interdifference(ns: Array<number>): Array<number> {
   }
 
   return diffs;
-}
-
-function isStrictlyIncreasing(ns: Array<number>): boolean {
-  return ns.every((n, i) => i === 0 || n > ns[i - 1]);
-}
-
-function isStrictlyDecreasing(ns: Array<number>): boolean {
-  return ns.every((n, i) => i === 0 || n < ns[i - 1]);
-}
-
-function isMonotonic(ns: Array<number>): boolean {
-  return isStrictlyIncreasing(ns) || isStrictlyDecreasing(ns);
 }
 
 const isWithinRange = (min: number, max: number) => (n: number) => {
