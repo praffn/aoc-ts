@@ -4,6 +4,7 @@ import {
   isMonotonic,
   isStrictlyDecreasing,
   isStrictlyIncreasing,
+  permute,
   slidingWindow,
 } from "./iter";
 
@@ -61,6 +62,47 @@ describe("lib > iter", () => {
     test("all false", (t) => {
       const actual = all([1, 2, 3], (n) => n > 3);
       t.assert.equal(actual, false);
+    });
+  });
+
+  describe("permute", () => {
+    test("empty", (t) => {
+      const actual = Array.from(permute([]));
+      t.assert.deepEqual(actual, [[]]);
+    });
+
+    test("with unique values", (t) => {
+      const input = [1, 2, 3];
+      const expected = [
+        [1, 2, 3],
+        [1, 3, 2],
+        [3, 2, 1],
+        [3, 1, 2],
+        [2, 1, 3],
+        [2, 3, 1],
+      ].toSorted();
+
+      const actual = Array.from(permute(input));
+      const actualSorted = actual.toSorted();
+
+      t.assert.deepEqual(actualSorted, expected);
+    });
+
+    test("with non values", (t) => {
+      const input = [1, 1, 3];
+      const expected = [
+        [1, 1, 3],
+        [1, 3, 1],
+        [3, 1, 1],
+        [3, 1, 1],
+        [1, 1, 3],
+        [1, 3, 1],
+      ].toSorted();
+
+      const actual = Array.from(permute(input));
+      const actualSorted = actual.toSorted();
+
+      t.assert.deepEqual(actualSorted, expected);
     });
   });
 

@@ -53,3 +53,33 @@ export function isStrictlyIncreasing(ns: Iterable<number>): boolean {
 export function isStrictlyDecreasing(ns: Iterable<number>): boolean {
   return all(slidingWindow(ns, 2), ([a, b]) => a > b);
 }
+
+export function* permute<T>(it: Iterable<T>): Generator<Array<T>> {
+  const arr = Array.from(it);
+  const len = arr.length;
+  const control = Array(len).fill(0);
+
+  yield arr.slice();
+
+  let i = 0;
+  while (i < len) {
+    if (control[i] < i) {
+      if (i % 2 === 0) {
+        const tmp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = tmp;
+      } else {
+        const tmp = arr[control[i]];
+        arr[control[i]] = arr[i];
+        arr[i] = tmp;
+      }
+
+      yield arr.slice();
+      control[i]++;
+      i = 0;
+    } else {
+      control[i] = 0;
+      i++;
+    }
+  }
+}
