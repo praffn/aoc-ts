@@ -3,8 +3,8 @@ import { LineReader } from "./line-reader";
 import chalk from "chalk";
 
 export interface Solution {
-  readonly first: number;
-  readonly second: number;
+  readonly first: number | string;
+  readonly second: number | string;
 }
 
 export type Solver = (input: LineReader) => Promise<Solution>;
