@@ -1,7 +1,7 @@
 import test, { describe } from "node:test";
 import { climb } from "./01";
 
-test("2015-01", (t) => {
+test("2015.01", (t) => {
   const cases = [
     ["(())", 0, -1],
     ["()()", 0, -1],

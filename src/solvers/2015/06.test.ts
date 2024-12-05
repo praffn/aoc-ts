@@ -2,7 +2,7 @@ import test from "node:test";
 import solver from "./06";
 import { createLineReaderFromString } from "../../line-reader";
 
-test("2015-06", async (t) => {
+test("2015.06", async (t) => {
   const input = `turn on 0,0 through 999,999
 turn off 499,499 through 500,500
 toggle 0,0 through 999,0

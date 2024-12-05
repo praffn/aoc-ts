@@ -1,7 +1,7 @@
 import test from "node:test";
 import { computeRequiredWrappingMaterials } from "./02";
 
-test("2015-02", (t) => {
+test("2015.02", (t) => {
   const cases = [
     {
       input: [2, 3, 4] as const,

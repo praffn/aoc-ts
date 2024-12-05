@@ -2,7 +2,7 @@ import test from "node:test";
 import { createLineReaderFromString } from "../../line-reader";
 import solver from "./12";
 
-test("2015-12", async (t) => {
+test("2015.12", async (t) => {
   const input = JSON.stringify([
     1,
     { a: 2, b: [1, "a", 3] },
