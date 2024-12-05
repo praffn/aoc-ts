@@ -83,3 +83,50 @@ export function* permute<T>(it: Iterable<T>): Generator<Array<T>> {
     }
   }
 }
+
+export function range(end: number): Generator<number>;
+export function range(start: number, end: number): Generator<number>;
+export function range(
+  start: number,
+  end: number,
+  step: number
+): Generator<number>;
+export function* range(
+  start: number,
+  end?: number,
+  step = 1
+): Generator<number> {
+  if (end === undefined) {
+    end = start;
+    start = 0;
+  }
+
+  if (step === 0) {
+    throw new Error("Step cannot be zero");
+  }
+
+  if (step > 0) {
+    for (let i = start; i < end; i += step) {
+      yield i;
+    }
+  } else {
+    for (let i = start; i > end; i += step) {
+      yield i;
+    }
+  }
+}
+
+export function* combinations<T>(
+  elements: Array<T>,
+  k: number
+): Generator<Array<T>> {
+  if (k === 0) {
+    yield [];
+  } else if (k === elements.length) {
+    yield elements;
+  } else {
+    const [first, ...rest] = elements;
+    yield* combinations(rest, k);
+    yield* combinations(rest, k - 1).map((c) => [first, ...c]);
+  }
+}

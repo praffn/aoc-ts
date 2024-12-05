@@ -1,10 +1,12 @@
 import test, { describe } from "node:test";
 import {
   all,
+  combinations,
   isMonotonic,
   isStrictlyDecreasing,
   isStrictlyIncreasing,
   permute,
+  range,
   slidingWindow,
 } from "./iter";
 
@@ -103,6 +105,55 @@ describe("lib > iter", () => {
       const actualSorted = actual.toSorted();
 
       t.assert.deepEqual(actualSorted, expected);
+    });
+  });
+
+  describe("range", () => {
+    test("only end", (t) => {
+      const actual = Array.from(range(5));
+      t.assert.deepEqual(actual, [0, 1, 2, 3, 4]);
+    });
+
+    test("with start", (t) => {
+      const actual = Array.from(range(3, 9));
+      t.assert.deepEqual(actual, [3, 4, 5, 6, 7, 8]);
+    });
+
+    test("with skip", (t) => {
+      const actual = Array.from(range(3, 9, 2));
+      t.assert.deepEqual(actual, [3, 5, 7]);
+    });
+
+    test("with negative skip", (t) => {
+      const actual = Array.from(range(9, 3, -2));
+      t.assert.deepEqual(actual, [9, 7, 5]);
+    });
+
+    test("throws when step is zero", (t) => {
+      t.assert.throws(() => {
+        Array.from(range(0, 10, 0));
+      });
+    });
+  });
+
+  describe("combinations", () => {
+    test("3 choose 1", (t) => {
+      const actual = Array.from(combinations([1, 2, 3], 1)).toSorted();
+      t.assert.deepEqual(actual, [[1], [2], [3]]);
+    });
+
+    test("3 choose 2", (t) => {
+      const actual = Array.from(combinations([1, 2, 3], 2)).toSorted();
+      t.assert.deepEqual(actual, [
+        [1, 2],
+        [1, 3],
+        [2, 3],
+      ]);
+    });
+
+    test("3 choose 3", (t) => {
+      const actual = Array.from(combinations([1, 2, 3], 3)).toSorted();
+      t.assert.deepEqual(actual, [[1, 2, 3]]);
     });
   });
 
