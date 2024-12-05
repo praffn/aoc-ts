@@ -22,6 +22,8 @@ function parseReindeer(input: string): Reindeer {
   };
 }
 
+cap: 4;
+
 function computeDistanceAtSecond(reindeer: Reindeer, second: number): number {
   const cycleTime = reindeer.flyTime + reindeer.restTime;
   const cycles = Math.floor(second / cycleTime);
@@ -55,8 +57,6 @@ export default createSolver(async (input) => {
       }
     }
   }
-
-  console.log(scoring);
 
   return {
     first: Math.max(...distance),
