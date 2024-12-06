@@ -7,6 +7,7 @@ import {
   isStrictlyDecreasing,
   isStrictlyIncreasing,
   permute,
+  product,
   range,
   slidingWindow,
 } from "./iter";
@@ -155,6 +156,38 @@ describe("lib > iter", () => {
     test("3 choose 3", (t) => {
       const actual = Array.from(combinations([1, 2, 3], 3)).toSorted();
       t.assert.deepEqual(actual, [[1, 2, 3]]);
+    });
+  });
+
+  describe("product", () => {
+    test("empty", (t) => {
+      const expected: Array<unknown> = [];
+      const actual = Array.from(product([]));
+      t.assert.deepEqual(actual, expected);
+    });
+
+    test("with even length", (t) => {
+      const expected = [
+        [1, 3],
+        [1, 4],
+        [2, 3],
+        [2, 4],
+      ];
+      const actual = Array.from(product([1, 2], [3, 4])).toSorted();
+      t.assert.deepEqual(actual, expected);
+    });
+
+    test("with uneven length", (t) => {
+      const expected = [
+        [1, 4],
+        [1, 5],
+        [2, 4],
+        [2, 5],
+        [3, 4],
+        [3, 5],
+      ];
+      const actual = Array.from(product([1, 2, 3], [4, 5])).toSorted();
+      t.assert.deepEqual(actual, expected);
     });
   });
 

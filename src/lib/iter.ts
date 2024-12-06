@@ -146,3 +146,20 @@ export function* divisors(n: number): Generator<number> {
     }
   }
 }
+
+// product returns a generator that yields the cartesian product of the input iterables.
+export function* product<T>(
+  ...iterables: Array<Iterable<T>>
+): Generator<Array<T>> {
+  if (iterables.length === 0) {
+    return yield [];
+  }
+
+  const [first, ...rest] = iterables;
+
+  for (const value of first) {
+    for (const subproduct of product(...rest)) {
+      yield [value, ...subproduct];
+    }
+  }
+}
