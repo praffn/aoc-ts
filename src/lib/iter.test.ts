@@ -2,6 +2,7 @@ import test, { describe } from "node:test";
 import {
   all,
   combinations,
+  divisors,
   isMonotonic,
   isStrictlyDecreasing,
   isStrictlyIncreasing,
@@ -154,6 +155,21 @@ describe("lib > iter", () => {
     test("3 choose 3", (t) => {
       const actual = Array.from(combinations([1, 2, 3], 3)).toSorted();
       t.assert.deepEqual(actual, [[1, 2, 3]]);
+    });
+  });
+
+  describe("divisors", () => {
+    test("divisors of 255", (t) => {
+      const expected = [1, 3, 5, 15, 17, 51, 85, 255];
+      const actual = Array.from(divisors(255)).toSorted((a, b) => a - b);
+      t.assert.deepEqual(actual, expected);
+    });
+
+    test("divisors of prime", (t) => {
+      const n = 233;
+      const expected = [1, n];
+      const actual = Array.from(divisors(n)).toSorted((a, b) => a - b);
+      t.assert.deepEqual(actual, expected);
     });
   });
 

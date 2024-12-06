@@ -130,3 +130,19 @@ export function* combinations<T>(
     yield* combinations(rest, k - 1).map((c) => [first, ...c]);
   }
 }
+
+// divisors returns a generator that yields all divisors of n, including 1 and n.
+// runtime: O(sqrt(n))
+export function* divisors(n: number): Generator<number> {
+  const sqrtN = Math.sqrt(n);
+
+  for (let k = 1; k <= sqrtN; k++) {
+    if (n % k === 0) {
+      yield k;
+      const nk = n / k;
+      if (k !== nk) {
+        yield nk;
+      }
+    }
+  }
+}
