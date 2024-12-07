@@ -2,7 +2,16 @@
   "compilerOptions": {
     "lib": ["ESNext"],
     "target": "ESNext",
-    "strict": true
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": true,
+    "module": "Preserve",
+    "noEmit": true
   },
   "include": ["src/**/*.ts"]
 }

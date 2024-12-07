@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "aoc": "tsx src/main.ts",
+    "typecheck": "tsc",
     "test": "node --import tsx --test **/*.test.ts"
   },
   "keywords": [],
