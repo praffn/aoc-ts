@@ -1,5 +1,5 @@
 import { create } from "node:domain";
-import { LineReader } from "./line-reader";
+import type { LineReader } from "./line-reader";
 import chalk from "chalk";
 
 export interface Solution {
