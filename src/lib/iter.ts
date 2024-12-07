@@ -163,6 +163,9 @@ export function product<A, B, C, D>(
   c: Iterable<C>,
   d: Iterable<D>
 ): Generator<[A, B, C, D]>;
+export function product<T>(
+  ...iterables: Array<Iterable<T>>
+): Generator<Array<T>>;
 export function* product<T>(
   ...iterables: Array<Iterable<T>>
 ): Generator<Array<T>> {
