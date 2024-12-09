@@ -82,12 +82,15 @@ export function prettyPrintSolution(
     CORNER_PIECE + HORIZONTAL_PIECE.repeat(BOX_SIZE - 2) + CORNER_PIECE;
 
   const title = `Solution for day ${day} of ${year}`;
-  const titlePadding = Math.floor((BOX_SIZE - title.length) / 2) - 1;
+  const fractionalTitlePadding = (BOX_SIZE - title.length) / 2;
+  const titlePadding = Math.floor(fractionalTitlePadding) - 1;
+  const rightTitlePadding = Math.ceil(fractionalTitlePadding) - 1;
+
   const titleLine =
     VERTICAL_PIECE +
     " ".repeat(titlePadding) +
     title +
-    " ".repeat(titlePadding) +
+    " ".repeat(rightTitlePadding) +
     VERTICAL_PIECE;
 
   const emptyDec = VERTICAL_PIECE + " ".repeat(BOX_SIZE - 2) + VERTICAL_PIECE;
