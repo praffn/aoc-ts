@@ -9,4 +9,9 @@ module.exports = [
     name: "day",
     message: "Day",
   },
+  {
+    type: "confirm",
+    name: "withInput",
+    message: "Do you want to add an input file?",
+  },
 ];
