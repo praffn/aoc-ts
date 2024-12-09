@@ -189,3 +189,19 @@ export function min(ns: Iterable<number>): number {
   }
   return min;
 }
+
+export function sum(ns: Iterable<number>): number {
+  let sum = 0;
+  for (const n of ns) {
+    sum += n;
+  }
+  return sum;
+}
+
+export function numericProduct(ns: Iterable<number>): number {
+  let product = 1;
+  for (const n of ns) {
+    product *= n;
+  }
+  return product;
+}

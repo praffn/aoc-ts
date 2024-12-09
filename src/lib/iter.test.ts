@@ -7,10 +7,12 @@ import {
   isStrictlyDecreasing,
   isStrictlyIncreasing,
   min,
+  numericProduct,
   permute,
   product,
   range,
   slidingWindow,
+  sum,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -216,6 +218,30 @@ describe("lib > iter", () => {
     test("returns the smallest number", (t) => {
       const actual = min([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]);
       t.assert.equal(actual, 1);
+    });
+  });
+
+  describe("sum", () => {
+    test("empty returns 0", (t) => {
+      const actual = sum([]);
+      t.assert.equal(actual, 0);
+    });
+
+    test("sums the numbers", (t) => {
+      const actual = sum([1, 2, 3, 4, 5, -6]);
+      t.assert.equal(actual, 9);
+    });
+  });
+
+  describe("numericProduct", () => {
+    test("empty returns 1", (t) => {
+      const actual = numericProduct([]);
+      t.assert.equal(actual, 1);
+    });
+
+    test("returns the product of the numbers", (t) => {
+      const actual = numericProduct([1, 2, 3, 4, 5, -6]);
+      t.assert.equal(actual, -720);
     });
   });
 
