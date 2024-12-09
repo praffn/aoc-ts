@@ -181,3 +181,11 @@ export function* product<T>(
     }
   }
 }
+
+export function min(ns: Iterable<number>): number {
+  let min = Infinity;
+  for (const n of ns) {
+    min = Math.min(min, n);
+  }
+  return min;
+}

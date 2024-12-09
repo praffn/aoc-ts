@@ -6,6 +6,7 @@ import {
   isMonotonic,
   isStrictlyDecreasing,
   isStrictlyIncreasing,
+  min,
   permute,
   product,
   range,
@@ -203,6 +204,18 @@ describe("lib > iter", () => {
       const expected = [1, n];
       const actual = Array.from(divisors(n)).toSorted((a, b) => a - b);
       t.assert.deepEqual(actual, expected);
+    });
+  });
+
+  describe("min", () => {
+    test("empty returns infinity", (t) => {
+      const actual = min([]);
+      t.assert.equal(actual, Infinity);
+    });
+
+    test("returns the smallest number", (t) => {
+      const actual = min([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]);
+      t.assert.equal(actual, 1);
     });
   });
 
