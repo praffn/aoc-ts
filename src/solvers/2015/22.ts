@@ -196,7 +196,7 @@ export default createSolverWithLineArray(async (input) => {
   const simulatePart2 = createSimulator(true);
 
   return {
-    first: min(simulatePart1(initialState)),
-    second: min(simulatePart2(initialState)),
+    first: min(simulatePart1(initialState), -1),
+    second: min(simulatePart2(initialState), -1),
   };
 });

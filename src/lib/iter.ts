@@ -182,12 +182,17 @@ export function* product<T>(
   }
 }
 
-export function min(ns: Iterable<number>): number {
+export function min(ns: Iterable<number>): number | undefined;
+export function min(ns: Iterable<number>, defaultValue: number): number;
+export function min(
+  ns: Iterable<number>,
+  defaultValue?: number
+): number | undefined {
   let min = Infinity;
   for (const n of ns) {
     min = Math.min(min, n);
   }
-  return min;
+  return min === Infinity ? defaultValue : min;
 }
 
 export function sum(ns: Iterable<number>): number {

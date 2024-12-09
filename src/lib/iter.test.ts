@@ -210,9 +210,14 @@ describe("lib > iter", () => {
   });
 
   describe("min", () => {
-    test("empty returns infinity", (t) => {
+    test("empty returns undefined", (t) => {
       const actual = min([]);
-      t.assert.equal(actual, Infinity);
+      t.assert.equal(actual, undefined);
+    });
+
+    test("empty with default value returns default value", (t) => {
+      const actual = min([], 42);
+      t.assert.equal(actual, 42);
     });
 
     test("returns the smallest number", (t) => {
