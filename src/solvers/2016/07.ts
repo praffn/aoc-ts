@@ -91,7 +91,6 @@ export default createSolver(async (input) => {
     }
 
     if (supportsSSL(ip)) {
-      console.log(ip);
       ipsSupportingSSL++;
     }
   }
