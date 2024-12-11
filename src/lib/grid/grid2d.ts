@@ -27,7 +27,6 @@ export class Grid2D<T> {
     height: number,
     fill: T extends Function ? never : T
   );
-
   constructor(
     width: number,
     height: number,
@@ -36,12 +35,13 @@ export class Grid2D<T> {
     this.width = width;
     this.height = height;
 
-    let fillFn = fill
-      ? typeof fill === "function"
-        ? (_: number, i: number) =>
-            (fill as any)(Math.floor(i % width), Math.floor(i / width))
-        : () => fill
-      : undefined;
+    let fillFn =
+      fill !== undefined
+        ? typeof fill === "function"
+          ? (_: number, i: number) =>
+              (fill as any)(Math.floor(i % width), Math.floor(i / width))
+          : () => fill
+        : undefined;
 
     this.#items = Array.from({ length: width * height }, fillFn as any);
   }
@@ -52,6 +52,17 @@ export class Grid2D<T> {
 
   set(x: number, y: number, value: T) {
     this.#items[y * this.width + x] = value;
+  }
+
+  fillRect(x: number, y: number, w: number, h: number, value: T) {
+    for (let dy = 0; dy < h; dy++) {
+      for (let dx = 0; dx < w; dx++) {
+        if (!this.isValidPosition(x + dx, y + dy)) {
+          continue;
+        }
+        this.set(x + dx, y + dy, value);
+      }
+    }
   }
 
   isValidPosition(x: number, y: number): boolean {
@@ -114,10 +125,10 @@ export class Grid2D<T> {
     return grid;
   }
 
-  print(this: Grid2D<string>): string;
-  print(this: Grid2D<number>): string;
-  print<T>(this: Grid2D<T>, formatter: (value: T) => string): string;
-  print<T>(this: Grid2D<T>, formatter?: (value: T) => string) {
+  toString(this: Grid2D<string>): string;
+  toString(this: Grid2D<number>): string;
+  toString<T>(this: Grid2D<T>, formatter: (value: T) => string): string;
+  toString<T>(this: Grid2D<T>, formatter?: (value: T) => string) {
     formatter ??= (value) => String(value);
 
     const rows: Array<string> = [];
@@ -130,5 +141,17 @@ export class Grid2D<T> {
     }
 
     return rows.join("\n");
+  }
+
+  *column(x: number) {
+    for (let y = 0; y < this.height; y++) {
+      yield this.at(x, y);
+    }
+  }
+
+  *row(y: number) {
+    for (let x = 0; x < this.width; x++) {
+      yield this.at(x, y);
+    }
   }
 }

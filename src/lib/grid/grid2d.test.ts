@@ -173,4 +173,64 @@ describe("Grid2D", () => {
       t.assert.deepEqual(actual, ["a", "b", "c", "d", "e", "f", "g", "h", "i"]);
     });
   });
+
+  describe("row", () => {
+    it("should return a iterator for the given row", (t) => {
+      const grid = Grid2D.from2DArray([
+        ["a", "b", "c"],
+        ["d", "e", "f"],
+        ["g", "h", "i"],
+      ]);
+
+      const actual = Array.from(grid.row(1));
+      t.assert.deepEqual(actual, ["d", "e", "f"]);
+    });
+  });
+
+  describe("column", () => {
+    it("should return a iterator for the given column", (t) => {
+      const grid = Grid2D.from2DArray([
+        ["a", "b", "c"],
+        ["d", "e", "f"],
+        ["g", "h", "i"],
+      ]);
+
+      const actual = Array.from(grid.column(1));
+      t.assert.deepEqual(actual, ["b", "e", "h"]);
+    });
+  });
+
+  describe("fillRect", () => {
+    it("should fill a rectangle with the given value", (t) => {
+      const grid = new Grid2D(3, 3, 0);
+      grid.fillRect(0, 0, 2, 2, 1);
+
+      const expected = [1, 1, 0, 1, 1, 0, 0, 0, 0];
+      const actual = Array.from(grid.values());
+      t.assert.deepEqual(actual, expected);
+    });
+
+    it("should only draw in the bounds of the grid", (t) => {
+      const grid = new Grid2D(3, 3, 0);
+      grid.fillRect(-1, -1, 3, 3, 1);
+
+      const expected = [1, 1, 0, 1, 1, 0, 0, 0, 0];
+      const actual = Array.from(grid.values());
+      t.assert.deepEqual(actual, expected);
+    });
+  });
+
+  describe("toString", () => {
+    it("should return a string representation of the grid", (t) => {
+      const grid = Grid2D.from2DArray([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+      ]);
+
+      const actual = grid.toString();
+      const expected = "123\n456\n789";
+      t.assert.equal(actual, expected);
+    });
+  });
 });
