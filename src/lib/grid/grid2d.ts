@@ -154,4 +154,12 @@ export class Grid2D<T> {
       yield this.at(x, y);
     }
   }
+
+  count(predicate: (value: T, x: number, y: number) => boolean): number {
+    return this.#items.filter((value, index) => {
+      const x = index % this.width;
+      const y = Math.floor(index / this.width);
+      return predicate(value, x, y);
+    }).length;
+  }
 }

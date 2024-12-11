@@ -220,6 +220,19 @@ describe("Grid2D", () => {
     });
   });
 
+  describe("count", () => {
+    it("should count the number of values that match the predicate", (t) => {
+      const grid = Grid2D.from2DArray([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+      ]);
+
+      const actual = grid.count((v) => v % 2 === 0);
+      t.assert.equal(actual, 4);
+    });
+  });
+
   describe("toString", () => {
     it("should return a string representation of the grid", (t) => {
       const grid = Grid2D.from2DArray([
