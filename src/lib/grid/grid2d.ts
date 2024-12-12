@@ -162,4 +162,46 @@ export class Grid2D<T> {
       return predicate(value, x, y);
     }).length;
   }
+
+  *regions(): Generator<Array<[x: number, y: number, neighbors: number]>> {
+    const visited = new Set<number>();
+
+    const floodFill = (index: number) => {
+      const stack = [index];
+      const region: Array<[number, number, number]> = [];
+      const searchValue = this.#items[index];
+
+      while (stack.length > 0) {
+        const current = stack.pop()!;
+        if (visited.has(current)) {
+          continue;
+        }
+
+        visited.add(current);
+        const x = current % this.width;
+        const y = Math.floor(current / this.width);
+        let neighborCount = 0;
+
+        for (const [value, nx, ny] of this.neighbors(x, y)) {
+          if (value !== searchValue) {
+            continue;
+          }
+          neighborCount++;
+          stack.push(ny * this.width + nx);
+        }
+
+        region.push([x, y, neighborCount]);
+      }
+
+      return region;
+    };
+
+    for (let i = 0; i < this.#items.length; i++) {
+      if (visited.has(i)) {
+        continue;
+      }
+
+      yield floodFill(i);
+    }
+  }
 }

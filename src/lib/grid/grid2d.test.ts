@@ -233,6 +233,37 @@ describe("Grid2D", () => {
     });
   });
 
+  describe("regions", () => {
+    it("should return an iterator over the regions of the grid", (t) => {
+      const grid = Grid2D.from2DArray([
+        ["a", "a", "a"],
+        ["b", "b", "a"],
+        ["a", "c", "c"],
+      ]);
+
+      const regions = Array.from(grid.regions()).toSorted();
+      const exptected = [
+        [
+          [0, 0, 1],
+          [1, 0, 2],
+          [2, 0, 2],
+          [2, 1, 1],
+        ],
+        [
+          [0, 1, 1],
+          [1, 1, 1],
+        ],
+        [[0, 2, 0]],
+        [
+          [1, 2, 1],
+          [2, 2, 1],
+        ],
+      ];
+
+      t.assert.deepEqual(regions, exptected);
+    });
+  });
+
   describe("toString", () => {
     it("should return a string representation of the grid", (t) => {
       const grid = Grid2D.from2DArray([
