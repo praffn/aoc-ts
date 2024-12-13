@@ -5,12 +5,12 @@ describe("linalg/vec2", () => {
   describe("makeVec2", () => {
     it("should create a new Vec2 given single input", (t) => {
       const vec = makeVec2(42);
-      t.assert.deepEqual(vec, [42, 42]);
+      t.assert.deepEqual(vec, { x: 42, y: 42 });
     });
 
     it("should create a new Vec2 given two inputs", (t) => {
       const vec = makeVec2(42, 99);
-      t.assert.deepEqual(vec, [42, 99]);
+      t.assert.deepEqual(vec, { x: 42, y: 99 });
     });
   });
 

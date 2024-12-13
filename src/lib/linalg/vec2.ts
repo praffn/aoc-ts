@@ -1,15 +1,18 @@
-export type Vec2 = [number, number];
+export interface Vec2 {
+  x: number;
+  y: number;
+}
 
 export function makeVec2(n: number): Vec2;
 export function makeVec2(x: number, y: number): Vec2;
 export function makeVec2(x: number, y?: number): Vec2 {
-  return [x, y ?? x];
+  return { x, y: y ?? x };
 }
 
 export function add(a: Vec2, b: Vec2): Vec2 {
-  return [a[0] + b[0], a[1] + b[1]];
+  return makeVec2(a.x + b.x, a.y + b.y);
 }
 
 export function equals(a: Vec2, b: Vec2): boolean {
-  return a[0] === b[0] && a[1] === b[1];
+  return a.x === b.x && a.y === b.y;
 }

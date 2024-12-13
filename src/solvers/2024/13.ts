@@ -2,17 +2,17 @@ import { add, makeVec2, type Vec2 } from "../../lib/linalg/vec2";
 import { createSolverWithLineArray } from "../../solution";
 
 function solveDiophantineEquation(
-  [ax, ay]: Vec2,
-  [bx, by]: Vec2,
-  [cx, cy]: Vec2
+  a: Vec2,
+  b: Vec2,
+  c: Vec2
 ): [number, number] | undefined {
-  const det = ax * by - ay * bx;
+  const det = a.x * b.y - a.y * b.x;
   if (det === 0) {
     return;
   }
 
-  const detM = cx * by - cy * bx;
-  const detN = ax * cy - ay * cx;
+  const detM = c.x * b.y - c.y * b.x;
+  const detN = a.x * c.y - a.y * c.x;
 
   const m = detM / det;
   const n = detN / det;
