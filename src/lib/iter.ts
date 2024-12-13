@@ -116,6 +116,12 @@ export function* range(
   }
 }
 
+export function* chain<T>(...iterables: Array<Iterable<T>>): Generator<T> {
+  for (const it of iterables) {
+    yield* it;
+  }
+}
+
 export function* combinations<T>(
   elements: Array<T>,
   k: number

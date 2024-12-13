@@ -1,6 +1,7 @@
 import test, { describe } from "node:test";
 import {
   all,
+  chain,
   combinations,
   divisors,
   isMonotonic,
@@ -206,6 +207,23 @@ describe("lib > iter", () => {
       const expected = [1, n];
       const actual = Array.from(divisors(n)).toSorted((a, b) => a - b);
       t.assert.deepEqual(actual, expected);
+    });
+  });
+
+  describe("chain", () => {
+    test("empty", (t) => {
+      const actual = Array.from(chain());
+      t.assert.deepEqual(actual, []);
+    });
+
+    test("single", (t) => {
+      const actual = Array.from(chain([1, 2, 3]));
+      t.assert.deepEqual(actual, [1, 2, 3]);
+    });
+
+    test("multiple", (t) => {
+      const actual = Array.from(chain([1, 2, 3], [4, 5], [6]));
+      t.assert.deepEqual(actual, [1, 2, 3, 4, 5, 6]);
     });
   });
 
