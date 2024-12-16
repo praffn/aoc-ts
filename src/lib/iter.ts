@@ -123,17 +123,41 @@ export function* chain<T>(...iterables: Array<Iterable<T>>): Generator<T> {
 }
 
 export function* combinations<T>(
-  elements: Array<T>,
+  iterable: Iterable<T>,
   k: number
-): Generator<Array<T>> {
-  if (k === 0) {
-    yield [];
-  } else if (k === elements.length) {
-    yield elements;
-  } else {
-    const [first, ...rest] = elements;
-    yield* combinations(rest, k);
-    yield* combinations(rest, k - 1).map((c) => [first, ...c]);
+): Generator<T[]> {
+  const items = Array.isArray(iterable) ? iterable : Array.from(iterable); // Convert the iterable to an array to allow indexing
+  const n = items.length;
+
+  // If the number of items to choose is greater than available items, return nothing.
+  if (k > n) return;
+
+  // Indices array that tracks the current combination
+  const indices = Array.from({ length: k }, (_, i) => i);
+
+  // Yield the first combination
+  yield indices.map((i) => items[i]);
+
+  while (true) {
+    let i: number;
+    // Find the rightmost index that can be incremented
+    for (i = k - 1; i >= 0; i--) {
+      if (indices[i] !== i + n - k) {
+        break;
+      }
+    }
+
+    // All combinations have been generated
+    if (i < 0) return;
+
+    indices[i]++;
+    // Reset all subsequent indices
+    for (let j = i + 1; j < k; j++) {
+      indices[j] = indices[j - 1] + 1;
+    }
+
+    // Yield the next combination
+    yield indices.map((i) => items[i]);
   }
 }
 
