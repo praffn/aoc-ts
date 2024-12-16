@@ -1,3 +1,5 @@
+import type { Vec2 } from "../linalg/vec2";
+
 const DIRECTIONS = [
   // top, right, bottom, left
   [0, -1],
@@ -10,6 +12,12 @@ const DIRECTIONS = [
   [-1, 1],
   [-1, -1],
 ];
+
+export interface TraversalConfig<T> {
+  allowDiagonals?: boolean;
+  predicate?: (value: T, x: number, y: number) => boolean;
+  getNeighbors?: (x: number, y: number) => Iterable<{ x: number; y: number }>;
+}
 
 export class Grid2D<T> {
   readonly #items: Array<T>;
@@ -65,6 +73,16 @@ export class Grid2D<T> {
     }
   }
 
+  findPosition(predicate: (value: T) => boolean): [number, number] | null {
+    for (let i = 0; i < this.#items.length; i++) {
+      if (predicate(this.#items[i])) {
+        return [i % this.width, Math.floor(i / this.width)];
+      }
+    }
+
+    return null;
+  }
+
   isValidPosition(x: number, y: number): boolean {
     return x >= 0 && x < this.width && y >= 0 && y < this.height;
   }
@@ -72,14 +90,14 @@ export class Grid2D<T> {
   *neighbors(
     x: number,
     y: number
-  ): Generator<[value: T, x: number, y: number]> {
+  ): Iterable<{ value: T; x: number; y: number }> {
     for (let i = 0; i < 4; i++) {
       const [dx, dy] = DIRECTIONS[i];
       const nx = x + dx;
       const ny = y + dy;
 
       if (this.isValidPosition(nx, ny)) {
-        yield [this.at(nx, ny), nx, ny];
+        yield { value: this.at(nx, ny), x: nx, y: ny };
       }
     }
   }
@@ -87,14 +105,14 @@ export class Grid2D<T> {
   *neighborsWithDiagonals(
     x: number,
     y: number
-  ): Generator<[value: T, x: number, y: number]> {
+  ): Iterable<{ value: T; x: number; y: number }> {
     for (let i = 0; i < 8; i++) {
       const [dx, dy] = DIRECTIONS[i];
       const nx = x + dx;
       const ny = y + dy;
 
       if (this.isValidPosition(nx, ny)) {
-        yield [this.at(nx, ny), nx, ny];
+        yield { value: this.at(nx, ny), x: nx, y: ny };
       }
     }
   }
@@ -143,14 +161,18 @@ export class Grid2D<T> {
     return rows.join("\n");
   }
 
-  *column(x: number) {
-    for (let y = 0; y < this.height; y++) {
+  column(x: number): Generator<T>;
+  column(x: number, skip: number): Generator<T>;
+  *column(x: number, skip = 0) {
+    for (let y = skip; y < this.height; y++) {
       yield this.at(x, y);
     }
   }
 
-  *row(y: number) {
-    for (let x = 0; x < this.width; x++) {
+  row(y: number): Generator<T>;
+  row(y: number, skip: number): Generator<T>;
+  *row(y: number, skip = 0) {
+    for (let x = skip; x < this.width; x++) {
       yield this.at(x, y);
     }
   }
@@ -161,6 +183,47 @@ export class Grid2D<T> {
       const y = Math.floor(index / this.width);
       return predicate(value, x, y);
     }).length;
+  }
+
+  *dfs(
+    x: number,
+    y: number,
+    config: Partial<TraversalConfig<T>> = {}
+  ): Iterable<[value: T, x: number, y: number]> {
+    const visited = new Set<number>();
+    const stack = [[x, y]];
+    const startValue = this.at(x, y);
+
+    const predicate = config.predicate ?? ((value) => value === startValue);
+    const getNeighbors =
+      config.getNeighbors ??
+      (config.allowDiagonals
+        ? this.neighborsWithDiagonals.bind(this)
+        : this.neighbors.bind(this));
+
+    while (stack.length > 0) {
+      const [x, y] = stack.pop()!;
+      const index = y * this.width + x;
+
+      if (visited.has(index)) {
+        continue;
+      }
+
+      visited.add(index);
+      if (!predicate(this.at(x, y), x, y)) {
+        continue;
+      }
+
+      yield [this.at(x, y), x, y];
+
+      for (const { x: nx, y: ny } of getNeighbors(x, y)) {
+        if (visited.has(ny * this.width + nx)) {
+          continue;
+        }
+
+        stack.push([nx, ny]);
+      }
+    }
   }
 
   *regions(): Generator<Array<[x: number, y: number, neighbors: number]>> {
@@ -182,7 +245,7 @@ export class Grid2D<T> {
         const y = Math.floor(current / this.width);
         let neighborCount = 0;
 
-        for (const [value, nx, ny] of this.neighbors(x, y)) {
+        for (const { value, x: nx, y: ny } of this.neighbors(x, y)) {
           if (value !== searchValue) {
             continue;
           }

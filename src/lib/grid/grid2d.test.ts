@@ -69,7 +69,9 @@ describe("Grid2D", () => {
     ]);
 
     it("should return 4 neighbors for non-edge cell", (t) => {
-      const actual = Array.from(grid.neighbors(1, 1)).toSorted();
+      const actual = Array.from(grid.neighbors(1, 1))
+        .map(({ value, x, y }) => [value, x, y])
+        .toSorted();
       t.assert.deepEqual(actual, [
         ["b", 1, 0],
         ["d", 0, 1],
@@ -79,7 +81,9 @@ describe("Grid2D", () => {
     });
 
     it("should return 3 neighbors for edge cell", (t) => {
-      const actual = Array.from(grid.neighbors(1, 0)).toSorted();
+      const actual = Array.from(grid.neighbors(1, 0))
+        .map(({ value, x, y }) => [value, x, y])
+        .toSorted();
       t.assert.deepEqual(actual, [
         ["a", 0, 0],
         ["c", 2, 0],
@@ -88,7 +92,9 @@ describe("Grid2D", () => {
     });
 
     it("should return 2 neighbors for corner cell", (t) => {
-      const actual = Array.from(grid.neighbors(0, 0)).toSorted();
+      const actual = Array.from(grid.neighbors(0, 0))
+        .map(({ value, x, y }) => [value, x, y])
+        .toSorted();
       t.assert.deepEqual(actual, [
         ["b", 1, 0],
         ["d", 0, 1],
@@ -104,7 +110,9 @@ describe("Grid2D", () => {
     ]);
 
     it("should return 8 neighbors for non-edge cell", (t) => {
-      const actual = Array.from(grid.neighborsWithDiagonals(1, 1)).toSorted();
+      const actual = Array.from(grid.neighborsWithDiagonals(1, 1))
+        .map(({ value, x, y }) => [value, x, y])
+        .toSorted();
       t.assert.deepEqual(actual, [
         ["a", 0, 0],
         ["b", 1, 0],
@@ -118,7 +126,9 @@ describe("Grid2D", () => {
     });
 
     it("should return 6 neighbors edge cell", (t) => {
-      const actual = Array.from(grid.neighborsWithDiagonals(1, 0)).toSorted();
+      const actual = Array.from(grid.neighborsWithDiagonals(1, 0))
+        .map(({ value, x, y }) => [value, x, y])
+        .toSorted();
       t.assert.deepEqual(actual, [
         ["a", 0, 0],
         ["c", 2, 0],
@@ -129,7 +139,9 @@ describe("Grid2D", () => {
     });
 
     it("should return 3 neighbors corner cell", (t) => {
-      const actual = Array.from(grid.neighborsWithDiagonals(0, 0)).toSorted();
+      const actual = Array.from(grid.neighborsWithDiagonals(0, 0))
+        .map(({ value, x, y }) => [value, x, y])
+        .toSorted();
       t.assert.deepEqual(actual, [
         ["b", 1, 0],
         ["d", 0, 1],
@@ -230,6 +242,72 @@ describe("Grid2D", () => {
 
       const actual = grid.count((v) => v % 2 === 0);
       t.assert.equal(actual, 4);
+    });
+  });
+
+  describe("dfs", () => {
+    const grid = Grid2D.from2DArray([
+      [1, 1, 2],
+      [3, 1, 4],
+      [5, 1, 1],
+    ]);
+
+    it("should return an DFS iterator over the grid at the position", (t) => {
+      const expected = [
+        [1, 0, 0],
+        [1, 1, 0],
+        [1, 1, 1],
+        [1, 1, 2],
+        [1, 2, 2],
+      ];
+      const actual = Array.from(grid.dfs(1, 0)).toSorted();
+      t.assert.deepEqual(actual, expected);
+    });
+
+    it("should return an DFS iterator over the grid at the position with a custom predicate", (t) => {
+      const expected = [
+        [1, 0, 0],
+        [1, 1, 0],
+        [3, 0, 1],
+        [1, 1, 1],
+        [5, 0, 2],
+        [1, 1, 2],
+        [1, 2, 2],
+      ];
+      const actual = Array.from(
+        grid.dfs(1, 0, {
+          predicate: (v) => v % 2 === 1,
+        })
+      ).toSorted((a, b) => {
+        if (a[2] < b[2]) return -1;
+        if (a[2] > b[2]) return 1;
+        if (a[1] < b[1]) return -1;
+        if (a[1] > b[1]) return 1;
+        return 0;
+      });
+      t.assert.deepEqual(actual, expected);
+    });
+
+    it("should return an DFS iterator over the grid at the position with a custom neighbor function", (t) => {
+      const expected = [
+        [1, 1, 0],
+        [1, 1, 1],
+        [1, 1, 2],
+      ];
+      const actual = Array.from(
+        grid.dfs(1, 0, {
+          getNeighbors(x, y) {
+            return [{ x, y: y + 1 }];
+          },
+        })
+      ).toSorted((a, b) => {
+        if (a[2] < b[2]) return -1;
+        if (a[2] > b[2]) return 1;
+        if (a[1] < b[1]) return -1;
+        if (a[1] > b[1]) return 1;
+        return 0;
+      });
+      t.assert.deepEqual(actual, expected);
     });
   });
 

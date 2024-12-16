@@ -20,7 +20,7 @@ export default createSolverWithLineArray(async (input) => {
       (heightToCoords.get(height) || new Set()).add(coords)
     );
 
-    for (const [neighborHeight, nx, ny] of map.neighbors(x, y)) {
+    for (const { value: neighborHeight, x: nx, y: ny } of map.neighbors(x, y)) {
       // if the neighbor is one unit taller, add an edge
       if (neighborHeight - height === 1) {
         const neighborCoords = `${nx},${ny}`;
