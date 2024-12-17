@@ -1,6 +1,10 @@
 type Predicate<T> = (value: T) => boolean;
 
 export function slidingWindow<T>(ns: Iterable<T>, size: 2): Generator<[T, T]>;
+export function slidingWindow<T>(
+  ns: Iterable<T>,
+  size: 3
+): Generator<[T, T, T]>;
 export function slidingWindow<T>(ns: Iterable<T>, size: number): Generator<T[]>;
 export function* slidingWindow<T>(
   ns: Iterable<T>,
