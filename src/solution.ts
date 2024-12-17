@@ -54,7 +54,7 @@ export function createSolverWithString(
   return createSolver(wrappedSolver);
 }
 
-const BOX_SIZE = 44;
+const MIN_BOX_SIZE = 44;
 const CORNER_PIECE = chalk.yellowBright("*");
 const HORIZONTAL_PIECE = chalk.gray("-");
 const VERTICAL_PIECE = chalk.gray("|");
@@ -78,6 +78,16 @@ export function prettyPrintSolution(
   day: number,
   runtimeMs: number
 ) {
+  const firstSolution = solution.first.toString();
+  const secondSolution = solution.second.toString();
+
+  const maxSolutionLength = Math.max(
+    firstSolution.length,
+    secondSolution.length
+  );
+
+  const BOX_SIZE = Math.max(MIN_BOX_SIZE, maxSolutionLength + 27);
+
   const dec =
     CORNER_PIECE + HORIZONTAL_PIECE.repeat(BOX_SIZE - 2) + CORNER_PIECE;
 
