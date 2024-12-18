@@ -1,0 +1,28 @@
+import test from "node:test";
+import { createLineReaderFromString } from "../../line-reader";
+import solver from "./20";
+
+test("2016.20", async (t) => {
+  const input = `0-47388395
+47388311-87389999
+560693405-572304095
+2372761028-2393875166
+706179804-740943515
+1875539946-1877484014
+633634731-644741930
+3683472347-3694077033
+3701974775-3724779161
+2848467395-2852263066
+3730366567-3730989122
+2117254263-2130476988
+3698750668-3698975786
+2746832288-2751564814
+253658494-259116334
+2364532781-2372761027`;
+
+  const lineReader = createLineReaderFromString(input);
+  const result = await solver(lineReader);
+
+  t.assert.equal(result.first, 87390000);
+  t.assert.equal(result.second, 4057343723);
+});
