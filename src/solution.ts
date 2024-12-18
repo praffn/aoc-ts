@@ -54,6 +54,16 @@ export function createSolverWithString(
   return createSolver(wrappedSolver);
 }
 
+export function createSolverWithNumber(
+  solver: (input: number) => Promise<Solution>
+): Solver {
+  const wrappedSolver = createSolverWithString((input) => {
+    return solver(Number.parseInt(input));
+  });
+
+  return createSolver(wrappedSolver);
+}
+
 const MIN_BOX_SIZE = 44;
 const CORNER_PIECE = chalk.yellowBright("*");
 const HORIZONTAL_PIECE = chalk.gray("-");
