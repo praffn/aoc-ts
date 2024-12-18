@@ -16,3 +16,7 @@ export function add(a: Vec2, b: Vec2): Vec2 {
 export function equals(a: Vec2, b: Vec2): boolean {
   return a.x === b.x && a.y === b.y;
 }
+
+export function key(v: Vec2): string {
+  return `${v.x},${v.y}`;
+}
