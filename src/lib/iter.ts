@@ -126,6 +126,46 @@ export function* chain<T>(...iterables: Array<Iterable<T>>): Generator<T> {
   }
 }
 
+export function permutations<T>(iterable: Iterable<T>): Iterable<Array<T>>;
+export function permutations<T>(
+  iterable: Iterable<T>,
+  r: number
+): Iterable<Array<T>>;
+export function* permutations<T>(
+  iterable: Iterable<T>,
+  r?: number
+): Iterable<Array<T>> {
+  const items = Array.from(iterable);
+  r ??= items.length;
+
+  if (r > items.length) {
+    return;
+  }
+
+  const indices = Array.from({ length: items.length }, (_, i) => i);
+  const cycles = Array.from({ length: r }, (_, i) => items.length - i);
+
+  yield indices.slice(0, r).map((i) => items[i]);
+
+  let n = items.length;
+  outer: while (n > 0) {
+    for (let i = r - 1; i >= 0; i--) {
+      cycles[i]--;
+      if (cycles[i] === 0) {
+        const [removed] = indices.splice(i, 1);
+        indices.push(removed);
+        cycles[i] = n - i;
+      } else {
+        const j = n - cycles[i];
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+        yield indices.slice(0, r).map((i) => items[i]);
+        continue outer;
+      }
+    }
+    return;
+  }
+}
+
 export function* combinations<T>(
   iterable: Iterable<T>,
   k: number
