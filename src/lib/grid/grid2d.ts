@@ -89,7 +89,8 @@ export class Grid2D<T> {
 
   *neighbors(
     x: number,
-    y: number
+    y: number,
+    value?: T
   ): Iterable<{ value: T; x: number; y: number }> {
     for (let i = 0; i < 4; i++) {
       const [dx, dy] = DIRECTIONS[i];
@@ -97,7 +98,10 @@ export class Grid2D<T> {
       const ny = y + dy;
 
       if (this.isValidPosition(nx, ny)) {
-        yield { value: this.at(nx, ny), x: nx, y: ny };
+        const neighborValue = this.at(nx, ny);
+        if (value === undefined || neighborValue === value) {
+          yield { value: this.at(nx, ny), x: nx, y: ny };
+        }
       }
     }
   }
@@ -127,6 +131,22 @@ export class Grid2D<T> {
 
   values(): Iterable<T> {
     return this.#items.values();
+  }
+
+  static fromLines<T = string>(lines: Array<string>): Grid2D<T>;
+  static fromLines<T>(
+    lines: Array<string>,
+    formatter: (line: string) => T
+  ): Grid2D<T>;
+  static fromLines<T>(
+    lines: Array<string>,
+    formatter?: (line: string) => Array<T>
+  ): Grid2D<T> {
+    return Grid2D.from2DArray(
+      lines.map((line) => {
+        return formatter ? formatter(line) : (line.split("") as Array<T>);
+      })
+    );
   }
 
   static from2DArray<T>(arr: Array<Array<T>>): Grid2D<T> {

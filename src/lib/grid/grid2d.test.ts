@@ -25,7 +25,7 @@ describe("Grid2D", () => {
     });
   });
 
-  describe("from2DArray", (t) => {
+  describe("from2DArray", () => {
     it("should construct valid grid", (t) => {
       const grid = Grid2D.from2DArray([
         ["a", "b", "c"],
@@ -38,6 +38,30 @@ describe("Grid2D", () => {
       t.assert.equal(grid.at(0, 0), "a");
       t.assert.equal(grid.at(1, 1), "e");
       t.assert.equal(grid.at(2, 2), "i");
+    });
+  });
+
+  describe("fromLines", () => {
+    it("should construct a valid grid", (t) => {
+      const grid = Grid2D.fromLines(["abc", "def", "ghi"]);
+
+      t.assert.equal(grid.width, 3);
+      t.assert.equal(grid.height, 3);
+      t.assert.equal(grid.at(0, 0), "a");
+      t.assert.equal(grid.at(1, 1), "e");
+      t.assert.equal(grid.at(2, 2), "i");
+    });
+
+    it("should allow custom line parsing", (t) => {
+      const grid = Grid2D.fromLines(["1,2,3", "4,5,6", "7,8,9"], (line) =>
+        line.split(",").map((n) => Number.parseInt(n))
+      );
+
+      t.assert.equal(grid.width, 3);
+      t.assert.equal(grid.height, 3);
+      t.assert.equal(grid.at(0, 0), 1);
+      t.assert.equal(grid.at(1, 1), 5);
+      t.assert.equal(grid.at(2, 2), 9);
     });
   });
 
