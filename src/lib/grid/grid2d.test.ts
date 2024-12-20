@@ -85,6 +85,61 @@ describe("Grid2D", () => {
     });
   });
 
+  describe("findPosition", () => {
+    it("should return the position of the first matching value", (t) => {
+      const grid = Grid2D.from2DArray([
+        ["a", "b", "c"],
+        ["d", "e", "f"],
+        ["g", "h", "i"],
+      ]);
+
+      const actual = grid.findPosition((v) => v === "e");
+      t.assert.deepEqual(actual, [1, 1]);
+    });
+
+    it("should return undefined if no matching value is found", (t) => {
+      const grid = Grid2D.from2DArray([
+        ["a", "b", "c"],
+        ["d", "e", "f"],
+        ["g", "h", "i"],
+      ]);
+
+      const actual = grid.findPosition((v) => v === "z");
+      t.assert.equal(actual, undefined);
+    });
+  });
+
+  describe("findAllPositions", () => {
+    it("should return the positions of all matching values", (t) => {
+      const grid = Grid2D.from2DArray([
+        ["a", "x", "x"],
+        ["x", "a", "x"],
+        ["a", "x", "a"],
+      ]);
+
+      const actual = Array.from(
+        grid.findAllPositions((v) => v === "a")
+      ).toSorted();
+      t.assert.deepEqual(actual, [
+        [0, 0],
+        [0, 2],
+        [1, 1],
+        [2, 2],
+      ]);
+    });
+
+    it("should return an empty iterator if no matching value is found", (t) => {
+      const grid = Grid2D.from2DArray([
+        ["a", "b", "c"],
+        ["d", "e", "f"],
+        ["g", "h", "i"],
+      ]);
+
+      const actual = Array.from(grid.findAllPositions((v) => v === "z"));
+      t.assert.deepEqual(actual, []);
+    });
+  });
+
   describe("neighbors", () => {
     const grid = Grid2D.from2DArray([
       ["a", "b", "c"],

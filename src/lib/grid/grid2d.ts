@@ -83,6 +83,16 @@ export class Grid2D<T> {
     return null;
   }
 
+  *findAllPositions(
+    predicate: (value: T) => boolean
+  ): Generator<[number, number]> {
+    for (let i = 0; i < this.#items.length; i++) {
+      if (predicate(this.#items[i])) {
+        yield [i % this.width, Math.floor(i / this.width)];
+      }
+    }
+  }
+
   isValidPosition(x: number, y: number): boolean {
     return x >= 0 && x < this.width && y >= 0 && y < this.height;
   }
