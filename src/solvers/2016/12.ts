@@ -5,13 +5,10 @@ export default createSolverWithLineArray(async (input) => {
   const instructions = input.map((line) => line.split(" "));
   const cpu = new AssemBunnyCPU(instructions);
 
-  cpu.run();
-  const first = cpu.registers.a;
-  cpu.reset();
-  cpu.registers.c = 1;
-  cpu.run();
-  const second = cpu.registers.a;
+  const first = cpu.run();
+  cpu.reset({ c: 1 });
 
+  const second = cpu.run();
   return {
     first,
     second,

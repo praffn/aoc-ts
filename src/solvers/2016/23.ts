@@ -3,16 +3,10 @@ import { AssemBunnyCPU } from "./assembunny";
 
 export default createSolverWithLineArray(async (input) => {
   const instructions = input.map((line) => line.split(" "));
-  const cpu = new AssemBunnyCPU(instructions);
-
-  cpu.registers.a = 7;
-  cpu.run();
-  const first = cpu.registers.a;
-  cpu.reset();
-  cpu.registers.a = 12;
-  cpu.run();
-  const second = cpu.registers.a;
-
+  const cpu = new AssemBunnyCPU(instructions, { a: 7 });
+  const first = cpu.run();
+  cpu.reset({ a: 12 });
+  const second = cpu.run();
   return {
     first,
     second,
