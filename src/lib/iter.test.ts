@@ -1,9 +1,10 @@
-import test, { describe } from "node:test";
+import test, { describe, it } from "node:test";
 import {
   all,
   chain,
   combinations,
   divisors,
+  enumerate,
   isMonotonic,
   isStrictlyDecreasing,
   isStrictlyIncreasing,
@@ -15,6 +16,7 @@ import {
   range,
   slidingWindow,
   sum,
+  zip,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -301,6 +303,36 @@ describe("lib > iter", () => {
     test("returns the product of the numbers", (t) => {
       const actual = numericProduct([1, 2, 3, 4, 5, -6]);
       t.assert.equal(actual, -720);
+    });
+  });
+
+  describe("zip", () => {
+    it("should zip two iterables", (t) => {
+      const actual = Array.from(zip([1, 2, 3], ["a", "b", "c"]));
+      t.assert.deepEqual(actual, [
+        [1, "a"],
+        [2, "b"],
+        [3, "c"],
+      ]);
+    });
+
+    it("should stop when the shortest iterable is exhausted", (t) => {
+      const actual = Array.from(zip([1, 2], ["a", "b", "c"]));
+      t.assert.deepEqual(actual, [
+        [1, "a"],
+        [2, "b"],
+      ]);
+    });
+  });
+
+  describe("enumerate", () => {
+    it("should enumerate an iterable", (t) => {
+      const actual = Array.from(enumerate(["a", "b", "c"]));
+      t.assert.deepEqual(actual, [
+        [0, "a"],
+        [1, "b"],
+        [2, "c"],
+      ]);
     });
   });
 

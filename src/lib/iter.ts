@@ -126,6 +126,31 @@ export function* chain<T>(...iterables: Array<Iterable<T>>): Generator<T> {
   }
 }
 
+export function* zip<T, U>(
+  a: Iterable<T>,
+  b: Iterable<U>
+): IteratorObject<[T, U]> {
+  const itA = a[Symbol.iterator]();
+  const itB = b[Symbol.iterator]();
+
+  while (true) {
+    const { value: valueA, done: doneA } = itA.next();
+    const { value: valueB, done: doneB } = itB.next();
+
+    if (doneA || doneB) {
+      return;
+    }
+
+    yield [valueA, valueB];
+  }
+}
+
+export function* enumerate<T>(
+  iterable: Iterable<T>
+): IteratorObject<[number, T]> {
+  return yield* zip(range(0, Infinity), iterable);
+}
+
 export function permutations<T>(iterable: Iterable<T>): Iterable<Array<T>>;
 export function permutations<T>(
   iterable: Iterable<T>,
