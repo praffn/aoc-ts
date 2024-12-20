@@ -179,6 +179,18 @@ describe("Grid2D", () => {
         ["d", 0, 1],
       ]);
     });
+
+    it("should return neighbors that satisfy the predicate", (t) => {
+      const actual = Array.from(
+        grid.neighbors(1, 1, (v) => v !== "f" && v !== "h")
+      )
+        .map(({ value, x, y }) => [value, x, y])
+        .toSorted();
+      t.assert.deepEqual(actual, [
+        ["b", 1, 0],
+        ["d", 0, 1],
+      ]);
+    });
   });
 
   describe("neighborsWithDiagonals", () => {

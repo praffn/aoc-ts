@@ -100,7 +100,7 @@ export class Grid2D<T> {
   *neighbors(
     x: number,
     y: number,
-    value?: T
+    predicate?: (value: T) => boolean
   ): Iterable<{ value: T; x: number; y: number }> {
     for (let i = 0; i < 4; i++) {
       const [dx, dy] = DIRECTIONS[i];
@@ -109,8 +109,8 @@ export class Grid2D<T> {
 
       if (this.isValidPosition(nx, ny)) {
         const neighborValue = this.at(nx, ny);
-        if (value === undefined || neighborValue === value) {
-          yield { value: this.at(nx, ny), x: nx, y: ny };
+        if (predicate === undefined || predicate(neighborValue)) {
+          yield { value: neighborValue, x: nx, y: ny };
         }
       }
     }
