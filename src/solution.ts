@@ -7,7 +7,10 @@ export interface Solution {
   readonly second: number | bigint | string;
 }
 
-export type Solver = (input: LineReader) => Promise<Solution>;
+export type Solver = (
+  input: LineReader,
+  ...args: Array<any>
+) => Promise<Solution>;
 
 export const SolverBrand = Symbol("Solver");
 
@@ -31,34 +34,36 @@ export async function getSolver(year: number, day: number): Promise<Solver> {
 }
 
 export function createSolverWithLineArray(
-  solver: (input: Array<string>) => Promise<Solution>
+  solver: (input: Array<string>, ...args: Array<any>) => Promise<Solution>
 ): Solver {
-  const wrappedSolver = async (input: LineReader) => {
+  const wrappedSolver = async (input: LineReader, ...args: Array<any>) => {
     const lines = [];
     for await (const line of input) {
       lines.push(line);
     }
-    return solver(lines);
+    return solver(lines, ...args);
   };
 
   return createSolver(wrappedSolver);
 }
 
 export function createSolverWithString(
-  solver: (input: string) => Promise<Solution>
+  solver: (input: string, ...args: Array<any>) => Promise<Solution>
 ): Solver {
-  const wrappedSolver = createSolverWithLineArray(async (lines) => {
-    return solver(lines.join());
-  });
+  const wrappedSolver = createSolverWithLineArray(
+    async (lines, ...args: Array<any>) => {
+      return solver(lines.join(), ...args);
+    }
+  );
 
   return createSolver(wrappedSolver);
 }
 
 export function createSolverWithNumber(
-  solver: (input: number) => Promise<Solution>
+  solver: (input: number, ...args: Array<any>) => Promise<Solution>
 ): Solver {
-  const wrappedSolver = createSolverWithString((input) => {
-    return solver(Number.parseInt(input));
+  const wrappedSolver = createSolverWithString((input, ...args: Array<any>) => {
+    return solver(Number.parseInt(input), ...args);
   });
 
   return createSolver(wrappedSolver);
