@@ -93,13 +93,10 @@ export function prettyPrintSolution(
   day: number,
   runtimeMs: number
 ) {
-  const firstSolution = solution.first.toString();
-  const secondSolution = solution.second.toString();
+  const first = `First:  ${solution.first}`;
+  const second = `Second: ${solution.second}`;
 
-  const maxSolutionLength = Math.max(
-    firstSolution.length,
-    secondSolution.length
-  );
+  const maxSolutionLength = Math.max(first.length, second.length);
 
   const BOX_SIZE = Math.max(MIN_BOX_SIZE, maxSolutionLength + 27);
 
@@ -120,16 +117,12 @@ export function prettyPrintSolution(
 
   const emptyDec = VERTICAL_PIECE + " ".repeat(BOX_SIZE - 2) + VERTICAL_PIECE;
 
-  const first = `First:  ${solution.first}`;
-  const second = `Second: ${solution.second}`;
-
   let firstLine =
     VERTICAL_PIECE +
     " ".repeat(titlePadding) +
     `${chalk.gray("First:")}  ${chalk.bold(solution.first)}` +
     " ".repeat(BOX_SIZE - first.length - titlePadding - 2) +
     VERTICAL_PIECE;
-
   let secondLine =
     VERTICAL_PIECE +
     " ".repeat(titlePadding) +
