@@ -1,5 +1,5 @@
 import { describe, it } from "node:test";
-import { add, equals, makeVec2 } from "./vec2";
+import { add, equals, makeVec2, sub } from "./vec2";
 
 describe("linalg/vec2", () => {
   describe("makeVec2", () => {
@@ -21,6 +21,16 @@ describe("linalg/vec2", () => {
       const expected = makeVec2(-2, 7.5);
 
       t.assert.deepEqual(add(a, b), expected);
+    });
+  });
+
+  describe("sub", () => {
+    it("should subtract two vectors", (t) => {
+      const a = makeVec2(3, 6);
+      const b = makeVec2(-5, 1.5);
+      const expected = makeVec2(8, 4.5);
+
+      t.assert.deepEqual(sub(a, b), expected);
     });
   });
 

@@ -13,6 +13,10 @@ export function add(a: Vec2, b: Vec2): Vec2 {
   return makeVec2(a.x + b.x, a.y + b.y);
 }
 
+export function sub(a: Vec2, b: Vec2): Vec2 {
+  return makeVec2(a.x - b.x, a.y - b.y);
+}
+
 export function equals(a: Vec2, b: Vec2): boolean {
   return a.x === b.x && a.y === b.y;
 }
