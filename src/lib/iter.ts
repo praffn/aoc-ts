@@ -281,6 +281,19 @@ export function* product<T>(
   }
 }
 
+export function max(ns: Iterable<number>): number | undefined;
+export function max(ns: Iterable<number>, defaultValue: number): number;
+export function max(
+  ns: Iterable<number>,
+  defaultValue?: number
+): number | undefined {
+  let max = -Infinity;
+  for (const n of ns) {
+    max = Math.max(max, n);
+  }
+  return max === -Infinity ? defaultValue : max;
+}
+
 export function min(ns: Iterable<number>): number | undefined;
 export function min(ns: Iterable<number>, defaultValue: number): number;
 export function min(

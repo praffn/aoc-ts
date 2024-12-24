@@ -8,6 +8,7 @@ import {
   isMonotonic,
   isStrictlyDecreasing,
   isStrictlyIncreasing,
+  max,
   min,
   numericProduct,
   permutations,
@@ -279,6 +280,23 @@ describe("lib > iter", () => {
     test("returns the smallest number", (t) => {
       const actual = min([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]);
       t.assert.equal(actual, 1);
+    });
+  });
+
+  describe("max", () => {
+    test("empty returns undefined", (t) => {
+      const actual = max([]);
+      t.assert.equal(actual, undefined);
+    });
+
+    test("empty with default value returns default value", (t) => {
+      const actual = max([], 42);
+      t.assert.equal(actual, 42);
+    });
+
+    test("returns the largest number", (t) => {
+      const actual = max([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]);
+      t.assert.equal(actual, 9);
     });
   });
 
