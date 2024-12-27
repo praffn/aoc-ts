@@ -1,7 +1,7 @@
 import { createSolverWithLineArray } from "../../solution";
 import { AssemBunnyCPU } from "./assembunny";
 
-const MAX_RUN = 1_000;
+const MAX_RUN = 10;
 function solve(cpu: AssemBunnyCPU) {
   let a = 0;
   while (true) {
