@@ -127,7 +127,7 @@ export class AssemBunnyCPU {
   }
 
   #jnz(x: string, y: string) {
-    if (this.#registers[x] !== 0) {
+    if (this.#getValue(x) !== 0) {
       this.#ip += this.#getValue(y);
     } else {
       this.#ip++;
@@ -142,9 +142,19 @@ export class AssemBunnyCPU {
   }
 
   run() {
+    const it = this.runWithOutput();
+    let r = it.next();
+    while (!r.done) {
+      r = it.next();
+    }
+    return r.value;
+  }
+
+  *runWithOutput() {
     while (this.#ip < this.#instructions.length) {
-      const [op, x, y, z] = this.#instructions[this.#ip];
+      const [op, x, y] = this.#instructions[this.#ip];
       const toggled = this.#toggles.has(this.#ip);
+      // console.log(op, x, y, this.#registers, toggled);
       switch (op) {
         case "cpy":
           if (!toggled) {
@@ -177,6 +187,14 @@ export class AssemBunnyCPU {
         case "tgl":
           if (!toggled) {
             this.#tgl(x);
+          } else {
+            this.#inc(x);
+          }
+          break;
+        case "out":
+          if (!toggled) {
+            yield this.#getValue(x);
+            this.#ip++;
           } else {
             this.#inc(x);
           }
