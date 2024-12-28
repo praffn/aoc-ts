@@ -1,6 +1,7 @@
 import test, { describe, it } from "node:test";
 import {
   all,
+  cartesianRange,
   chain,
   combinations,
   divisors,
@@ -143,6 +144,24 @@ describe("lib > iter", () => {
       t.assert.throws(() => {
         Array.from(range(0, 10, 0));
       });
+    });
+  });
+
+  describe("cartesianRange", () => {
+    it("should yield all values in the range", (t) => {
+      const actual = Array.from(cartesianRange(-2, 2, -1, 1));
+      const expected = [
+        [-2, -1],
+        [-2, 0],
+        [-1, -1],
+        [-1, 0],
+        [0, -1],
+        [0, 0],
+        [1, -1],
+        [1, 0],
+      ];
+
+      t.assert.deepEqual(actual, expected);
     });
   });
 

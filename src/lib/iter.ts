@@ -120,6 +120,19 @@ export function* range(
   }
 }
 
+export function* cartesianRange(
+  xStart: number,
+  xEnd: number,
+  yStart: number,
+  yEnd: number
+) {
+  for (const x of range(xStart, xEnd)) {
+    for (const y of range(yStart, yEnd)) {
+      yield [x, y];
+    }
+  }
+}
+
 export function* chain<T>(...iterables: Array<Iterable<T>>): Generator<T> {
   for (const it of iterables) {
     yield* it;
