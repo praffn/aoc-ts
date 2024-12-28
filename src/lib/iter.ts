@@ -335,3 +335,11 @@ export function numericProduct(ns: Iterable<number>): number {
   }
   return product;
 }
+
+export function counter<T>(iterable: Iterable<T>): Map<T, number> {
+  const counts = new Map<T, number>();
+  for (const item of iterable) {
+    counts.set(item, (counts.get(item) ?? 0) + 1);
+  }
+  return counts;
+}

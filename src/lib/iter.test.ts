@@ -4,6 +4,7 @@ import {
   cartesianRange,
   chain,
   combinations,
+  counter,
   divisors,
   enumerate,
   isMonotonic,
@@ -116,6 +117,20 @@ describe("lib > iter", () => {
       const actualSorted = actual.toSorted();
 
       t.assert.deepEqual(actualSorted, expected);
+    });
+  });
+
+  describe("counter", () => {
+    it("should count the number of occurrences of each element", (t) => {
+      const actual = counter([1, 2, 3, 1, 2, 1]);
+      t.assert.deepEqual(
+        actual,
+        new Map([
+          [1, 3],
+          [2, 2],
+          [3, 1],
+        ])
+      );
     });
   });
 
