@@ -20,6 +20,7 @@ import {
   slidingWindow,
   sum,
   zip,
+  count,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -117,6 +118,18 @@ describe("lib > iter", () => {
       const actualSorted = actual.toSorted();
 
       t.assert.deepEqual(actualSorted, expected);
+    });
+  });
+
+  describe("count", () => {
+    it("should count the size of the iterable", (t) => {
+      const actual = count([1, 2, 3, 4, 5]);
+      t.assert.equal(actual, 5);
+    });
+
+    it("should return 0 for an empty iterable", (t) => {
+      const actual = count([]);
+      t.assert.equal(actual, 0);
     });
   });
 

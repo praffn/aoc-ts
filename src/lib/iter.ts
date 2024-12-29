@@ -336,6 +336,14 @@ export function numericProduct(ns: Iterable<number>): number {
   return product;
 }
 
+export function count(iterable: Iterable<unknown>): number {
+  let count = 0;
+  for (const _ of iterable) {
+    count++;
+  }
+  return count;
+}
+
 export function counter<T>(iterable: Iterable<T>): Map<T, number> {
   const counts = new Map<T, number>();
   for (const item of iterable) {
