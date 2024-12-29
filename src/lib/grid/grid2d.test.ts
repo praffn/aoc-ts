@@ -431,6 +431,30 @@ describe("Grid2D", () => {
 
       t.assert.deepEqual(regions, exptected);
     });
+
+    it("should return an iterator over the regions of the grid with a custom predicate", (t) => {
+      const grid = Grid2D.from2DArray([
+        [1, 1, 2],
+        [3, 1, 4],
+        [3, 1, 1],
+      ]);
+
+      const regions = Array.from(grid.regions((n) => n % 2 === 1)).toSorted();
+
+      const exptected = [
+        [
+          [0, 0, 2],
+          [0, 1, 3],
+          [0, 2, 2],
+          [1, 2, 3],
+          [2, 2, 1],
+          [1, 1, 3],
+          [1, 0, 2],
+        ],
+      ].toSorted();
+
+      t.assert.deepEqual(regions, exptected);
+    });
   });
 
   describe("toString", () => {

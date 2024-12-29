@@ -256,7 +256,13 @@ export class Grid2D<T> {
     }
   }
 
-  *regions(): Generator<Array<[x: number, y: number, neighbors: number]>> {
+  regions(): Generator<Array<[x: number, y: number, neighbors: number]>>;
+  regions(
+    predicate: (v: T) => boolean
+  ): Generator<Array<[x: number, y: number, neighbors: number]>>;
+  *regions(
+    predicate?: (v: T) => boolean
+  ): Generator<Array<[x: number, y: number, neighbors: number]>> {
     const visited = new Set<number>();
 
     const floodFill = (index: number) => {
@@ -276,9 +282,14 @@ export class Grid2D<T> {
         let neighborCount = 0;
 
         for (const { value, x: nx, y: ny } of this.neighbors(x, y)) {
-          if (value !== searchValue) {
+          if (predicate) {
+            if (!predicate(value)) {
+              continue;
+            }
+          } else if (value !== searchValue) {
             continue;
           }
+
           neighborCount++;
           stack.push(ny * this.width + nx);
         }
@@ -291,6 +302,10 @@ export class Grid2D<T> {
 
     for (let i = 0; i < this.#items.length; i++) {
       if (visited.has(i)) {
+        continue;
+      }
+
+      if (predicate && !predicate(this.#items[i])) {
         continue;
       }
 
