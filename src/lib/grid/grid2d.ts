@@ -58,6 +58,10 @@ export class Grid2D<T> {
     return this.#items[y * this.width + x];
   }
 
+  atVector({ x, y }: Vec2) {
+    return this.at(x, y);
+  }
+
   set(x: number, y: number, value: T) {
     this.#items[y * this.width + x] = value;
   }
@@ -77,6 +81,20 @@ export class Grid2D<T> {
     for (let i = 0; i < this.#items.length; i++) {
       if (predicate(this.#items[i])) {
         return [i % this.width, Math.floor(i / this.width)];
+      }
+    }
+
+    return null;
+  }
+
+  findPositionVector(
+    predicate: (value: T, x: number, y: number) => boolean
+  ): Vec2 | null {
+    for (let i = 0; i < this.#items.length; i++) {
+      const x = i % this.width;
+      const y = Math.floor(i / this.width);
+      if (predicate(this.#items[i], x, y)) {
+        return { x, y };
       }
     }
 

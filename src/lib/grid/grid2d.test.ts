@@ -73,6 +73,14 @@ describe("Grid2D", () => {
     });
   });
 
+  describe("atVector", () => {
+    it("should return the value at the given vector", (t) => {
+      const grid = new Grid2D<string>(3, 3);
+      grid.set(1, 1, "foo");
+      t.assert.equal(grid.atVector({ x: 1, y: 1 }), "foo");
+    });
+  });
+
   describe("isValidPosition", () => {
     it("should return true if the position is within the grid", (t) => {
       const grid = new Grid2D<string>(3, 3);
@@ -105,6 +113,30 @@ describe("Grid2D", () => {
       ]);
 
       const actual = grid.findPosition((v) => v === "z");
+      t.assert.equal(actual, undefined);
+    });
+  });
+
+  describe("findPositionVector", () => {
+    it("should return the position vector of the first matching value", (t) => {
+      const grid = Grid2D.from2DArray([
+        ["a", "b", "c"],
+        ["d", "e", "f"],
+        ["g", "h", "i"],
+      ]);
+
+      const actual = grid.findPositionVector((v) => v === "e");
+      t.assert.deepEqual(actual, { x: 1, y: 1 });
+    });
+
+    it("should return undefined if no matching value is found", (t) => {
+      const grid = Grid2D.from2DArray([
+        ["a", "b", "c"],
+        ["d", "e", "f"],
+        ["g", "h", "i"],
+      ]);
+
+      const actual = grid.findPositionVector((v) => v === "z");
       t.assert.equal(actual, undefined);
     });
   });
