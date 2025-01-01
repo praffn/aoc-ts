@@ -204,6 +204,7 @@ export function* permutations<T>(
   }
 }
 
+export function combinations<T>(iterable: Iterable<T>, k: 2): Generator<[T, T]>;
 export function* combinations<T>(
   iterable: Iterable<T>,
   k: number
