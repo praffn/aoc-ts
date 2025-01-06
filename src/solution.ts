@@ -69,6 +69,19 @@ export function createSolverWithNumber(
   return createSolver(wrappedSolver);
 }
 
+export function createSolverWithNumberArray(
+  solver: (input: Array<number>, ...args: Array<any>) => Promise<Solution>
+): Solver {
+  const wrappedSolver = createSolverWithLineArray((lines, ...args) =>
+    solver(
+      lines.map((n) => Number.parseInt(n)),
+      ...args
+    )
+  );
+
+  return createSolver(wrappedSolver);
+}
+
 const MIN_BOX_SIZE = 44;
 const CORNER_PIECE = chalk.yellowBright("*");
 const HORIZONTAL_PIECE = chalk.gray("-");
