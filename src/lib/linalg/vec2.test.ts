@@ -1,5 +1,5 @@
 import { describe, it } from "node:test";
-import { add, equals, makeVec2, sub } from "./vec2";
+import { add, equals, makeVec2, manhattan, sub } from "./vec2";
 
 describe("linalg/vec2", () => {
   describe("makeVec2", () => {
@@ -45,6 +45,14 @@ describe("linalg/vec2", () => {
       const a = makeVec2(3, 6);
       const b = makeVec2(3, 7);
       t.assert.equal(equals(a, b), false);
+    });
+  });
+
+  describe("manhattan", () => {
+    it("should return the manhattan distance between two vectors", (t) => {
+      const a = makeVec2(3, 6);
+      const b = makeVec2(-5, 1);
+      t.assert.equal(manhattan(a, b), 13);
     });
   });
 });
