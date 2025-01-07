@@ -1,33 +1,25 @@
 import { createSolverWithString } from "../../solution";
 
 function toCharCodes(s: Array<string>) {
-  return s.map((c) => c.charCodeAt(0));
+  return new Uint8Array(s.map((c) => c.charCodeAt(0)));
 }
 
-function react(polymer: Array<number>): Array<number> {
-  const newPolymer: Array<number> = [];
+function react(polymer: Uint8Array): Uint8Array {
+  const stack = new Uint8Array(polymer.length);
+  let stackPointer = 0;
 
   for (let i = 0; i < polymer.length; i++) {
     const unit = polymer[i];
-    const nextUnit = polymer[i + 1];
 
-    if (!nextUnit) {
-      newPolymer.push(unit);
-      break;
-    }
-
-    if (Math.abs(unit - nextUnit) === 32) {
-      i++;
+    if (stackPointer > 0 && (stack[stackPointer - 1] ^ unit) === 32) {
+      stackPointer--;
     } else {
-      newPolymer.push(unit);
+      stack[stackPointer] = unit;
+      stackPointer++;
     }
   }
 
-  if (newPolymer.length === polymer.length) {
-    return newPolymer;
-  }
-
-  return react(newPolymer);
+  return stack.slice(0, stackPointer);
 }
 
 function findShortestPolymer(input: string) {
