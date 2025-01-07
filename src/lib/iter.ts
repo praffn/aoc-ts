@@ -205,10 +205,14 @@ export function* permutations<T>(
 }
 
 export function combinations<T>(iterable: Iterable<T>, k: 2): Generator<[T, T]>;
+export function combinations<T>(
+  iterable: Iterable<T>,
+  k: number
+): Generator<Array<T>>;
 export function* combinations<T>(
   iterable: Iterable<T>,
   k: number
-): Generator<T[]> {
+): Generator<Array<T>> {
   const items = Array.isArray(iterable) ? iterable : Array.from(iterable); // Convert the iterable to an array to allow indexing
   const n = items.length;
 
