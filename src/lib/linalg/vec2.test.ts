@@ -1,5 +1,5 @@
 import { describe, it } from "node:test";
-import { add, equals, makeVec2, manhattan, sub } from "./vec2";
+import { add, equals, makeVec2, manhattan, scale, sub } from "./vec2";
 
 describe("linalg/vec2", () => {
   describe("makeVec2", () => {
@@ -31,6 +31,15 @@ describe("linalg/vec2", () => {
       const expected = makeVec2(8, 4.5);
 
       t.assert.deepEqual(sub(a, b), expected);
+    });
+  });
+
+  describe("scale", () => {
+    it("should scale a vector by a scalar", (t) => {
+      const a = makeVec2(3, -6);
+      const expected = makeVec2(6, -12);
+
+      t.assert.deepEqual(scale(a, 2), expected);
     });
   });
 
