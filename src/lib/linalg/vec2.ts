@@ -32,3 +32,14 @@ export function key(v: Vec2): string {
 export function manhattan(a: Vec2, b: Vec2): number {
   return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 }
+
+export const directions = {
+  north: makeVec2(0, -1),
+  south: makeVec2(0, 1),
+  west: makeVec2(-1, 0),
+  east: makeVec2(1, 0),
+  northeast: makeVec2(1, -1),
+  southeast: makeVec2(1, 1),
+  northwest: makeVec2(-1, -1),
+  southwest: makeVec2(-1, 1),
+} as const;
