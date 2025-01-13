@@ -29,6 +29,11 @@ export function key(v: Vec2): string {
   return `${v.x},${v.y}`;
 }
 
+export function unkey(s: string): Vec2 {
+  const [x, y] = s.split(",").map((n) => Number.parseInt(n));
+  return makeVec2(x, y);
+}
+
 export function manhattan(a: Vec2, b: Vec2): number {
   return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 }
