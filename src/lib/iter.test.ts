@@ -131,6 +131,11 @@ describe("lib > iter", () => {
       const actual = count([]);
       t.assert.equal(actual, 0);
     });
+
+    it("should count the number of values passing a predicate", (t) => {
+      const actual = count([1, 2, 3, 4, 5], (n) => n % 2 === 0);
+      t.assert.equal(actual, 2);
+    });
   });
 
   describe("counter", () => {

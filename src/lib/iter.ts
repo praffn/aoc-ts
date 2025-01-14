@@ -341,10 +341,20 @@ export function numericProduct(ns: Iterable<number>): number {
   return product;
 }
 
-export function count(iterable: Iterable<unknown>): number {
+export function count(iterable: Iterable<unknown>): number;
+export function count<T>(
+  iterable: Iterable<T>,
+  predicate: Predicate<T>
+): number;
+export function count<T>(
+  iterable: Iterable<T>,
+  predicate?: Predicate<T>
+): number {
   let count = 0;
-  for (const _ of iterable) {
-    count++;
+  for (const v of iterable) {
+    if (predicate === undefined || predicate(v)) {
+      count++;
+    }
   }
   return count;
 }
