@@ -137,7 +137,7 @@ export class Grid2D<T> {
   *neighborsWithDiagonals(
     x: number,
     y: number
-  ): Iterable<{ value: T; x: number; y: number }> {
+  ): Generator<{ value: T; x: number; y: number }> {
     for (let i = 0; i < 8; i++) {
       const [dx, dy] = DIRECTIONS[i];
       const nx = x + dx;
