@@ -1,81 +1,12 @@
 import { range } from "../../lib/iter";
 import { createSolverWithLineArray } from "../../solution";
+import { OPCODES, type OpcodeFn, type Registers } from "./device";
 
 type Instruction = [number, number, number, number];
-type Registers = [number, number, number, number];
-
-type OpcodeFn = (a: number, b: number, c: number, registers: Registers) => void;
-
 type Snapshot = {
   before: Registers;
   after: Registers;
   instruction: Instruction;
-};
-
-const OPCODES: Record<string, OpcodeFn> = {
-  addr(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] + registers[b];
-  },
-
-  addi(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] + b;
-  },
-
-  mulr(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] * registers[b];
-  },
-
-  muli(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] * b;
-  },
-
-  banr(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] & registers[b];
-  },
-
-  bani(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] & b;
-  },
-
-  borr(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] | registers[b];
-  },
-
-  bori(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] | b;
-  },
-
-  setr(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a];
-  },
-
-  seti(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = a;
-  },
-
-  gtir(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = a > registers[b] ? 1 : 0;
-  },
-
-  gtri(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] > b ? 1 : 0;
-  },
-
-  gtrr(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] > registers[b] ? 1 : 0;
-  },
-
-  eqir(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = a === registers[b] ? 1 : 0;
-  },
-
-  eqri(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] === b ? 1 : 0;
-  },
-
-  eqrr(a: number, b: number, c: number, registers: Registers) {
-    registers[c] = registers[a] === registers[b] ? 1 : 0;
-  },
 };
 
 function registersEqual(a: Registers, b: Registers) {
