@@ -1,5 +1,5 @@
+import { PriorityQueue } from "../../lib/collections/priority-queue";
 import { add, equals as vecEquals, type Vec2 } from "../../lib/linalg/vec2";
-import { PriorityQueue } from "../../lib/pq";
 import { createSolverWithString } from "../../solution";
 
 // Returns the number of bits set in n

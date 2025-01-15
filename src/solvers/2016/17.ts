@@ -1,5 +1,5 @@
+import { PriorityQueue } from "../../lib/collections/priority-queue";
 import { add, type Vec2 } from "../../lib/linalg/vec2";
-import { PriorityQueue } from "../../lib/pq";
 import { createSolverWithString } from "../../solution";
 import { hash } from "node:crypto";
 

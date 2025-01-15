@@ -1,5 +1,5 @@
 import { describe, it } from "node:test";
-import { PriorityQueue } from "./pq";
+import { PriorityQueue } from "./priority-queue";
 
 describe("PriorityQueue", () => {
   describe("dequeue", () => {

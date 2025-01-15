@@ -1,5 +1,5 @@
+import { PriorityQueue } from "../../lib/collections/priority-queue";
 import { directions } from "../../lib/linalg/vec2";
-import { PriorityQueue } from "../../lib/pq";
 import { createSolverWithLineArray } from "../../solution";
 
 /**

@@ -1,7 +1,7 @@
 import { getOr } from "../../lib/dicts";
 import { Grid2D } from "../../lib/grid/grid2d";
 import { add, makeVec2, type Vec2 } from "../../lib/linalg/vec2";
-import { PriorityQueue } from "../../lib/pq";
+import { PriorityQueue } from "../../lib/collections/priority-queue";
 import { createSolverWithLineArray } from "../../solution";
 
 const WALL = "#";

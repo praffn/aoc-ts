@@ -1,6 +1,6 @@
+import { PriorityQueue } from "../../lib/collections/priority-queue";
 import { getOrSet } from "../../lib/dicts";
 import { min } from "../../lib/iter";
-import { PriorityQueue } from "../../lib/pq";
 import { createSolver } from "../../solution";
 
 const STEP_DURATION = 60;
