@@ -1,33 +1,23 @@
 import { createSolverWithString } from "../../solution";
-import {
-  copyMemory,
-  getMemory,
-  makeMemory,
-  run,
-  setMemory,
-  type Memory,
-} from "./intcode";
+import { IntcodeCPU } from "./intcode";
 
-function solveFirst(memory: Memory) {
-  const memoryCopy = copyMemory(memory);
-  setMemory(memoryCopy, 1, 12);
-  setMemory(memoryCopy, 2, 2);
-
-  run(memoryCopy);
-
-  return getMemory(memoryCopy, 0);
+function solveFirst(input: string) {
+  const cpu = new IntcodeCPU(input);
+  cpu.set(1, 12);
+  cpu.set(2, 2);
+  cpu.run();
+  return cpu.get(0);
 }
 
-function solveSecond(memory: Memory) {
+function solveSecond(input: string) {
   for (let noun = 0; noun <= 99; noun++) {
     for (let verb = 0; verb <= 99; verb++) {
-      const memoryCopy = copyMemory(memory);
-      setMemory(memoryCopy, 1, noun);
-      setMemory(memoryCopy, 2, verb);
+      const cpu = new IntcodeCPU(input);
+      cpu.set(1, noun);
+      cpu.set(2, verb);
+      cpu.run();
 
-      run(memoryCopy);
-
-      if (getMemory(memoryCopy, 0) === 19690720) {
+      if (cpu.get(0) === 19690720) {
         return 100 * noun + verb;
       }
     }
@@ -37,10 +27,8 @@ function solveSecond(memory: Memory) {
 }
 
 export default createSolverWithString(async (input) => {
-  const memory = makeMemory(input);
-
   return {
-    first: solveFirst(memory),
-    second: solveSecond(memory),
+    first: solveFirst(input),
+    second: solveSecond(input),
   };
 });
