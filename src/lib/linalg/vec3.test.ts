@@ -1,5 +1,5 @@
 import { describe, it } from "node:test";
-import { add, equals, makeVec3, sub } from "./vec3";
+import { scale, abs, add, equals, makeVec3, manhattan, sub } from "./vec3";
 
 describe("linalg/vec3", () => {
   describe("makeVec3", () => {
@@ -31,6 +31,39 @@ describe("linalg/vec3", () => {
       const expected = makeVec3(8, 4.5, -1);
 
       t.assert.deepEqual(sub(a, b), expected);
+    });
+  });
+
+  describe("abs", () => {
+    it("should return the absolute value of a vector", (t) => {
+      const a = makeVec3(-3, 6, -1);
+      const expected = makeVec3(3, 6, 1);
+
+      t.assert.deepEqual(abs(a), expected);
+    });
+  });
+
+  describe("scale", () => {
+    it("should scale a vector by a scalar", (t) => {
+      const a = makeVec3(3, 6, -1);
+      const expected = makeVec3(6, 12, -2);
+
+      t.assert.deepEqual(scale(a, 2), expected);
+    });
+  });
+
+  describe("manhattan", () => {
+    it("should return the manhattan distance between two vectors", (t) => {
+      const a = makeVec3(3, 6, -1);
+      const b = makeVec3(1, 5, 3);
+
+      t.assert.equal(manhattan(a, b), 7);
+    });
+
+    it("should return the manhattan distance between a vector and the origin", (t) => {
+      const a = makeVec3(3, 6, -1);
+
+      t.assert.equal(manhattan(a), 10);
     });
   });
 
