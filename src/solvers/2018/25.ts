@@ -1,52 +1,11 @@
+import { UndirectedGraph } from "../../lib/graph/undirected-graph";
+import { count } from "../../lib/iter";
 import { createSolverWithLineArray } from "../../solution";
 
 type Point = [number, number, number, number];
 
 function parsePoint(line: string): Point {
   return line.split(",").map((v) => parseInt(v)) as Point;
-}
-
-class UndirectedGraph {
-  #adjacency = new Map<string, Set<string>>();
-
-  addVertex(id: string) {
-    if (!this.#adjacency.has(id)) {
-      this.#adjacency.set(id, new Set());
-    }
-  }
-
-  addEdge(from: string, to: string) {
-    this.addVertex(from);
-    this.addVertex(to);
-
-    this.#adjacency.get(from)!.add(to);
-    this.#adjacency.get(to)!.add(from);
-  }
-
-  connectedComponents() {
-    const visited = new Set<string>();
-    const components: Array<Set<string>> = [];
-
-    const dfs = (id: string, component: Set<string>) => {
-      visited.add(id);
-      component.add(id);
-      for (const neighbor of this.#adjacency.get(id)!) {
-        if (!visited.has(neighbor)) {
-          dfs(neighbor, component);
-        }
-      }
-    };
-
-    for (const vertex of this.#adjacency.keys()) {
-      if (!visited.has(vertex)) {
-        const component = new Set<string>();
-        dfs(vertex, component);
-        components.push(component);
-      }
-    }
-
-    return components;
-  }
 }
 
 function manhattan(a: Point, b: Point) {
@@ -70,7 +29,7 @@ export default createSolverWithLineArray(async (input) => {
   }
 
   return {
-    first: graph.connectedComponents().length,
+    first: count(graph.connectedComponents()),
     second: "Merry Christmas! 🦌",
   };
 });

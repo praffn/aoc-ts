@@ -1,48 +1,8 @@
+import { UndirectedGraph } from "../../lib/graph/undirected-graph";
 import { createSolver } from "../../solution";
 
-class UndirectedGraph {
-  #adjacency = new Map<string, Set<string>>();
-
-  addEdge(from: string, to: string) {
-    if (!this.#adjacency.has(from)) {
-      this.#adjacency.set(from, new Set());
-    }
-    if (!this.#adjacency.has(to)) {
-      this.#adjacency.set(to, new Set());
-    }
-
-    this.#adjacency.get(from)!.add(to);
-    this.#adjacency.get(to)!.add(from);
-  }
-
-  connectedComponents() {
-    const visited = new Set<string>();
-    const components: Array<Set<string>> = [];
-
-    const dfs = (id: string, component: Set<string>) => {
-      visited.add(id);
-      component.add(id);
-      for (const neighbor of this.#adjacency.get(id)!) {
-        if (!visited.has(neighbor)) {
-          dfs(neighbor, component);
-        }
-      }
-    };
-
-    for (const vertex of this.#adjacency.keys()) {
-      if (!visited.has(vertex)) {
-        const component = new Set<string>();
-        dfs(vertex, component);
-        components.push(component);
-      }
-    }
-
-    return components;
-  }
-}
-
 export default createSolver(async (input) => {
-  const graph = new UndirectedGraph();
+  const graph = new UndirectedGraph<string>();
 
   for await (const line of input) {
     const [id, ids] = line.split(" <-> ");
@@ -51,7 +11,7 @@ export default createSolver(async (input) => {
     }
   }
 
-  const connectedComponents = graph.connectedComponents();
+  const connectedComponents = Array.from(graph.connectedComponents());
   const componentWith0 = connectedComponents.find((component) =>
     component.has("0")
   )!;
