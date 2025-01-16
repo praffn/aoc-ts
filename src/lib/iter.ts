@@ -50,6 +50,14 @@ export function isMonotonic(ns: Iterable<number>): boolean {
   return isStrictlyDecreasing(ns) || isStrictlyIncreasing(ns);
 }
 
+export function isNonDecreasing(ns: Iterable<number>): boolean {
+  return all(slidingWindow(ns, 2), ([a, b]) => a <= b);
+}
+
+export function isNonIncreasing(ns: Iterable<number>): boolean {
+  return all(slidingWindow(ns, 2), ([a, b]) => a >= b);
+}
+
 export function isStrictlyIncreasing(ns: Iterable<number>): boolean {
   return all(slidingWindow(ns, 2), ([a, b]) => a < b);
 }
