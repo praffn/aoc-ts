@@ -3,14 +3,15 @@ import { IntcodeCPU } from "./intcode";
 
 export default createSolverWithString(async (input) => {
   const firstCPU = new IntcodeCPU(input);
-  firstCPU.debug = true;
-  firstCPU.setInput(1);
+  firstCPU.writeInput(1);
+  firstCPU.run();
 
   const secondCPU = new IntcodeCPU(input);
-  secondCPU.setInput(5);
+  secondCPU.writeInput(5);
+  secondCPU.run();
 
   return {
-    first: firstCPU.run()!,
-    second: secondCPU.run()!,
+    first: firstCPU.lastOutput(),
+    second: secondCPU.lastOutput(),
   };
 });
