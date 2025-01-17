@@ -374,3 +374,17 @@ export function counter<T>(iterable: Iterable<T>): Map<T, number> {
   }
   return counts;
 }
+
+export function* chunk<T>(iterable: Iterable<T>, chunkSize: number) {
+  let chunk: Array<T> = [];
+  for (const item of iterable) {
+    chunk.push(item);
+    if (chunk.length === chunkSize) {
+      yield chunk;
+      chunk = [];
+    }
+  }
+  if (chunk.length > 0) {
+    yield chunk;
+  }
+}
