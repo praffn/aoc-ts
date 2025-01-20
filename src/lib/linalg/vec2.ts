@@ -3,6 +3,8 @@ export interface Vec2 {
   y: number;
 }
 
+export const zero = makeVec2(0);
+
 export function makeVec2(n: number): Vec2;
 export function makeVec2(x: number, y: number): Vec2;
 export function makeVec2(x: number, y?: number): Vec2 {
