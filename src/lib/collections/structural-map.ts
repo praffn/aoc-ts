@@ -15,6 +15,12 @@ export class StructuralMap<K, V> {
   constructor(keyFn: KeyFn<K>, entries?: Iterable<[K, V]>) {
     this.#map = new Map();
     this.#keyFn = keyFn;
+
+    if (entries) {
+      for (const [key, value] of entries) {
+        this.set(key, value);
+      }
+    }
   }
 
   key(value: K) {
@@ -116,5 +122,9 @@ export class StructuralMap<K, V> {
     }
 
     return result;
+  }
+
+  [Symbol.iterator]() {
+    return this.entries();
   }
 }
