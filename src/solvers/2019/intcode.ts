@@ -52,6 +52,17 @@ export class IntcodeCPU {
     this.#outputs = [];
   }
 
+  clone() {
+    const clone = new IntcodeCPU(this.#program);
+    clone.#memory = copyMemory(this.#memory);
+    clone.#ip = this.#ip;
+    clone.#relativeBase = this.#relativeBase;
+    clone.#inputs = this.#inputs.slice();
+    clone.#outputs = this.#outputs.slice();
+
+    return clone;
+  }
+
   #log(...args: any[]) {
     if (this.debug) {
       console.log(...args);
