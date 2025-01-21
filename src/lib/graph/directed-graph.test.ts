@@ -34,6 +34,58 @@ describe("DirectedGraph", () => {
     });
   });
 
+  describe("inDegree", () => {
+    it("should return the in-degree of a vertex", (t) => {
+      const graph = new DirectedGraph<string>();
+      graph.addVertex("TARGET");
+      graph.addVertex("A");
+      graph.addVertex("B");
+      graph.addVertex("C");
+      graph.addEdge("A", "TARGET");
+      graph.addEdge("B", "TARGET");
+      graph.addEdge("C", "TARGET");
+
+      t.assert.equal(graph.inDegree("TARGET"), 3);
+      graph.removeEdge("A", "TARGET");
+      t.assert.equal(graph.inDegree("TARGET"), 2);
+      graph.removeVertex("B");
+      t.assert.equal(graph.inDegree("TARGET"), 1);
+    });
+
+    it("should return 0 for a vertex with no incoming edges", (t) => {
+      const graph = new DirectedGraph<string>();
+      graph.addVertex("A");
+      graph.addVertex("B");
+      graph.addEdge("A", "B");
+
+      t.assert.equal(graph.inDegree("A"), 0);
+    });
+
+    it("should return 0 for a vertex that does not exist", (t) => {
+      const graph = new DirectedGraph<string>();
+
+      t.assert.equal(graph.inDegree("A"), 0);
+    });
+  });
+
+  describe("outDegree", () => {
+    it("should return the out-degree of a vertex", (t) => {
+      const graph = new DirectedGraph<string>();
+      graph.addVertex("A");
+      graph.addVertex("B");
+      graph.addVertex("C");
+      graph.addEdge("A", "B");
+      graph.addEdge("A", "C");
+
+      t.assert.equal(graph.outDegree("A"), 2);
+      t.assert.equal(graph.outDegree("B"), 0);
+      graph.removeEdge("A", "B");
+      t.assert.equal(graph.outDegree("A"), 1);
+      graph.removeVertex("C");
+      t.assert.equal(graph.outDegree("A"), 0);
+    });
+  });
+
   describe("hasVertex", () => {
     it("should return true if the vertex is in the graph", (t) => {
       const graph = new DirectedGraph<number>();
@@ -202,6 +254,19 @@ describe("DirectedGraph", () => {
 
       const neighbors = Array.from(graph.neighbors(1)).toSorted();
       t.assert.deepEqual(neighbors, [2, 3]);
+    });
+  });
+
+  describe("topologicalSort", () => {
+    it("should return a topological ordering of the vertices", (t) => {
+      const graph = new DirectedGraph<string>();
+      graph.addEdge("A", "D");
+      graph.addEdge("A", "B");
+      graph.addEdge("B", "C");
+      graph.addEdge("B", "D");
+
+      const result = Array.from(graph.topologicalSort());
+      t.assert.deepEqual(result, ["A", "B", "C", "D"]);
     });
   });
 });

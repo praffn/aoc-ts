@@ -1,9 +1,12 @@
+import { Queue } from "../collections/queue";
+
 type KeyFn<T> = (v: T) => string;
 
 export class DirectedGraph<V> {
   #vertexMap = new Map<V | string, V>();
   #adjacencyList = new Map<V | string, Map<V | string, number>>();
   #keyFn?: KeyFn<V>;
+  #inDegrees = new Map<V | string, number>();
 
   constructor();
   constructor(keyFn: KeyFn<V>);
@@ -34,9 +37,20 @@ export class DirectedGraph<V> {
     if (!this.#adjacencyList.has(key)) {
       this.#vertexMap.set(key, vertex);
       this.#adjacencyList.set(key, new Map());
+      this.#inDegrees.set(key, 0);
       return true;
     }
     return false;
+  }
+
+  inDegree(vertex: V) {
+    return this.#inDegrees.get(this.key(vertex)) ?? 0;
+  }
+
+  outDegree(vertex: V) {
+    const key = this.key(vertex);
+    const neighbors = this.#adjacencyList.get(key);
+    return neighbors ? neighbors.size : 0;
   }
 
   *vertices() {
@@ -46,6 +60,7 @@ export class DirectedGraph<V> {
   clear() {
     this.#adjacencyList.clear();
     this.#vertexMap.clear();
+    this.#inDegrees.clear();
   }
 
   /**
@@ -61,8 +76,16 @@ export class DirectedGraph<V> {
       return false;
     }
     this.#vertexMap.delete(key);
+    for (const neighbors of this.neighbors(vertex)) {
+      this.#inDegrees.set(
+        this.key(neighbors),
+        (this.#inDegrees.get(this.key(neighbors)) ?? 0) - 1
+      );
+    }
+
     this.#adjacencyList.delete(key);
-    for (const [, neighbors] of this.#adjacencyList) {
+    this.#inDegrees.delete(key);
+    for (const neighbors of this.#adjacencyList.values()) {
       neighbors.delete(key);
     }
 
@@ -102,6 +125,17 @@ export class DirectedGraph<V> {
     this.addVertex(from);
     this.addVertex(to);
     this.#adjacencyList.get(fromKey)!.set(toKey, weight);
+    this.#inDegrees.set(toKey, this.#inDegrees.get(toKey)! + 1);
+  }
+
+  *edges() {
+    for (const [fromKey, neighbors] of this.#adjacencyList) {
+      const from = this.#vertexMap.get(fromKey)!;
+      yield* neighbors.entries().map(([toKey, weight]) => {
+        const to = this.#vertexMap.get(toKey)!;
+        return [from, to, weight] as const;
+      });
+    }
   }
 
   /**
@@ -139,6 +173,10 @@ export class DirectedGraph<V> {
     }
 
     const didRemove = neighbors.delete(toKey);
+    if (didRemove) {
+      this.#inDegrees.set(toKey, (this.#inDegrees.get(toKey) ?? 0) - 1);
+    }
+
     return didRemove;
   }
 
@@ -206,5 +244,35 @@ export class DirectedGraph<V> {
     yield* neighbors.entries().map(([key, weight]) => {
       return [this.#vertexMap.get(key)!, weight] as const;
     });
+  }
+
+  /**
+   * Returns an iterator over the vertices of the graph in topological order.
+   * The topological order is a sequence of vertices such that for every edge
+   * from vertex `u` to vertex `v`, `u` comes before `v` in the sequence.
+   * Requires the graph to be a Directed Acyclic Graph (DAG).
+   */
+  *topologicalSort() {
+    const inDegrees = new Map(this.#inDegrees);
+    const queue = new Queue<V>();
+
+    for (const [vertex, degree] of inDegrees) {
+      if (degree === 0) {
+        queue.enqueue(this.#vertexMap.get(vertex)!);
+      }
+    }
+
+    while (!queue.isEmpty()) {
+      const vertex = queue.dequeue()!;
+      yield vertex;
+      for (const neighborVertex of this.neighbors(vertex)) {
+        const degree = inDegrees.get(this.key(neighborVertex))! - 1;
+        inDegrees.set(this.key(neighborVertex), degree);
+
+        if (degree === 0) {
+          queue.enqueue(neighborVertex);
+        }
+      }
+    }
   }
 }
