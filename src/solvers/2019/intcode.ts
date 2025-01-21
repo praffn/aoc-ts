@@ -74,6 +74,15 @@ export class IntcodeCPU {
   }
 
   /**
+   * Returns all output values and clears the output queue
+   */
+  getAndClearOutputs(): Array<number> {
+    const outputs = this.#outputs;
+    this.#outputs = [];
+    return outputs;
+  }
+
+  /**
    * Returns the first output value, i.e. the oldest produced
    */
   firstOutput(): number {
