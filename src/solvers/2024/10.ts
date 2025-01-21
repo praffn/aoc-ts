@@ -1,5 +1,5 @@
 import { allPaths } from "../../lib/graph/algos";
-import { DirectedGraph } from "../../lib/graph/DirectedGraph";
+import { DirectedGraph } from "../../lib/graph/directed-graph";
 import { Grid2D } from "../../lib/grid/grid2d";
 import { createSolverWithLineArray } from "../../solution";
 
