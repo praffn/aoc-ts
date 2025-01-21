@@ -14,3 +14,12 @@ export function gcd(a: number, b: number) {
 
   return a;
 }
+
+export function lcm(a: number, b: number) {
+  a = Math.abs(a);
+  b = Math.abs(b);
+  if (a > b) {
+    return (a / gcd(a, b)) * b;
+  }
+  return (b / gcd(b, a)) * a;
+}
