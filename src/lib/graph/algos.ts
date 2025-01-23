@@ -1,4 +1,4 @@
-import type { DirectedGraph } from "./DirectedGraph";
+import type { DirectedGraph } from "./directed-graph";
 
 export function* allPaths<V>(
   graph: DirectedGraph<V>,
