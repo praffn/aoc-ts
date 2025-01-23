@@ -34,6 +34,12 @@ export class Queue<T> {
     this.#size++;
   }
 
+  enqueueAll(values: Iterable<T>) {
+    for (const value of values) {
+      this.enqueue(value);
+    }
+  }
+
   dequeue() {
     if (this.#size === 0) {
       throw new Error("Queue is empty");
@@ -53,11 +59,49 @@ export class Queue<T> {
     return this.#buffer[this.#head];
   }
 
+  peekLast() {
+    if (this.#size === 0) {
+      throw new Error("Queue is empty");
+    }
+
+    return this.#buffer[(this.#tail - 1 + this.#capacity) % this.#capacity];
+  }
+
+  clear() {
+    this.#head = 0;
+    this.#tail = 0;
+    this.#size = 0;
+    for (let i = 0; i < this.#capacity; i++) {
+      this.#buffer[i] = undefined!;
+    }
+  }
+
+  clone() {
+    const queue = new Queue<T>(this.#capacity);
+    queue.#head = this.#head;
+    queue.#tail = this.#tail;
+    queue.#size = this.#size;
+    queue.#buffer = this.#buffer.slice();
+    return queue;
+  }
+
   get size() {
     return this.#size;
   }
 
   isEmpty() {
     return this.#size === 0;
+  }
+
+  *[Symbol.iterator]() {
+    for (let i = 0; i < this.#size; i++) {
+      yield this.#buffer[(this.#head + i) % this.#capacity];
+    }
+  }
+
+  *dequeueIterator() {
+    while (!this.isEmpty()) {
+      yield this.dequeue();
+    }
   }
 }
