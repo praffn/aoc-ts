@@ -39,8 +39,8 @@ function performPaint(
     cpu.writeInput(paintMap.get(currentPosition) ?? 0);
     const haltReason = cpu.run();
 
-    const color = cpu.removeFirstOutput();
-    const turn = cpu.removeFirstOutput();
+    const color = cpu.output.dequeue();
+    const turn = cpu.output.dequeue();
 
     paintMap.set(currentPosition, color);
     currentDirection = turn90(currentDirection, turn);

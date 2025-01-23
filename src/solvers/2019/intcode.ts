@@ -1,3 +1,5 @@
+import { Queue } from "../../lib/collections/queue";
+
 export type Memory = Array<number>;
 
 type Mode = 0 | 1 | 2;
@@ -27,8 +29,8 @@ export class IntcodeCPU {
   #relativeBase = 0;
   debug = false;
 
-  #inputs: Array<number> = [];
-  #outputs: Array<number> = [];
+  input = new Queue<number>();
+  output = new Queue<number>();
 
   constructor(program: string);
   constructor(memory: Memory);
@@ -38,6 +40,7 @@ export class IntcodeCPU {
         ? makeMemory(programOrMemory)
         : programOrMemory;
     this.#memory = copyMemory(this.#program);
+    this.#memory.push(...new Array(5000).fill(0));
   }
 
   /**
@@ -46,10 +49,11 @@ export class IntcodeCPU {
    */
   reset() {
     this.#memory = copyMemory(this.#program);
+    this.#memory.push(...new Array(5000).fill(0));
     this.#ip = 0;
     this.#relativeBase = 0;
-    this.#inputs = [];
-    this.#outputs = [];
+    this.input.clear();
+    this.output.clear();
   }
 
   clone() {
@@ -57,8 +61,8 @@ export class IntcodeCPU {
     clone.#memory = copyMemory(this.#memory);
     clone.#ip = this.#ip;
     clone.#relativeBase = this.#relativeBase;
-    clone.#inputs = this.#inputs.slice();
-    clone.#outputs = this.#outputs.slice();
+    clone.input = this.input.clone();
+    clone.output = this.output.clone();
 
     return clone;
   }
@@ -73,58 +77,24 @@ export class IntcodeCPU {
    * Writes the given values to the input queue.
    * The values will be read in order
    */
-  writeInput(...ns: Array<number>) {
-    this.#inputs.push(...ns);
-  }
-
-  /**
-   * Returns a read-only view of the output queue.
-   */
-  getOutputs(): ReadonlyArray<number> {
-    return this.#outputs;
-  }
-
-  /**
-   * Returns all output values and clears the output queue
-   */
-  getAndClearOutputs(): Array<number> {
-    const outputs = this.#outputs;
-    this.#outputs = [];
-    return outputs;
-  }
-
-  /**
-   * Returns the first output value, i.e. the oldest produced
-   */
-  firstOutput(): number {
-    return this.#outputs[0];
-  }
-
-  /**
-   * Returns the last output value, i.e. the most recently produced
-   */
-  lastOutput(): number {
-    return this.#outputs[this.#outputs.length - 1];
-  }
-
-  /**
-   * Removes and returns the first output value, i.e. the oldest produced
-   */
-  removeFirstOutput(): number {
-    return this.#outputs.shift()!;
+  writeInput(value: number): void;
+  writeInput(values: Array<number>): void;
+  writeInput(value: number | Array<number>): void {
+    const values = Array.isArray(value) ? value : [value];
+    this.input.enqueueAll(values);
   }
 
   /**
    * Returns the value in memory at the given address
    */
-  readMemory(addr: number): number {
+  getMemory(addr: number): number {
     return this.#memory[addr];
   }
 
   /**
    * Writes the given value to memory at the given address
    */
-  writeMemory(addr: number, value: number) {
+  setMemory(addr: number, value: number) {
     this.#memory[addr] = value;
   }
 
@@ -145,7 +115,7 @@ export class IntcodeCPU {
 
     switch (mode) {
       case MODE_IMMEDIATE:
-        return value;
+        return value ?? 0;
       case MODE_POSITION:
         return this.#memory[value];
       case MODE_RELATIVE:
@@ -193,11 +163,11 @@ export class IntcodeCPU {
   }
 
   #opInp(m1: Mode) {
-    if (this.#inputs.length === 0) {
+    if (this.input.isEmpty()) {
       this.#log(`\tINP: Waiting for input`);
       return HALT_WAITING;
     }
-    const input = this.#inputs.shift()!;
+    const input = this.input.dequeue();
     this.#log(`\tINP: ${input}`);
 
     this.#write(this.#ip + 1, m1, input);
@@ -208,7 +178,7 @@ export class IntcodeCPU {
   #opOut(m1: Mode) {
     const output = this.#read(this.#ip + 1, m1);
     this.#log(`\tOUT: ${output}`);
-    this.#outputs.push(output);
+    this.output.enqueue(output);
 
     this.#ip += 2;
   }

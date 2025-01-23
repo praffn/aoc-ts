@@ -8,9 +8,8 @@ import { HALT_TERMINATED, IntcodeCPU } from "./intcode";
  */
 function getBlockCount(cpu: IntcodeCPU) {
   cpu.run();
-  const outputs = cpu.getAndClearOutputs();
   let blockTiles = 0;
-  for (const [, , id] of chunk(outputs, 3)) {
+  for (const [, , id] of chunk(cpu.output.dequeueIterator(), 3)) {
     if (id === 2) {
       blockTiles++;
     }
@@ -25,7 +24,7 @@ function getBlockCount(cpu: IntcodeCPU) {
  * Returns the final score.
  */
 function play(cpu: IntcodeCPU) {
-  cpu.writeMemory(0, 2);
+  cpu.setMemory(0, 2);
 
   let score = -1;
 
@@ -35,8 +34,7 @@ function play(cpu: IntcodeCPU) {
     let paddleX = 0;
     let ballX = 0;
 
-    const outputs = cpu.getAndClearOutputs();
-    for (const [x, y, id] of chunk(outputs, 3)) {
+    for (const [x, y, id] of chunk(cpu.output.dequeueIterator(), 3)) {
       if (x === -1 && y === 0) {
         // Score output
         score = id;

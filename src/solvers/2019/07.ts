@@ -14,7 +14,7 @@ function solveFirst(memory: Memory) {
       cpu.writeInput(s);
       cpu.writeInput(lastOutput);
       cpu.run();
-      lastOutput = cpu.lastOutput();
+      lastOutput = cpu.output.peek();
     }
     maxOutput = Math.max(maxOutput, lastOutput);
   }
@@ -49,7 +49,7 @@ function solveSecond(memory: Memory) {
       }
 
       // Finally get the output
-      lastOutput = cpu.removeFirstOutput();
+      lastOutput = cpu.output.dequeue();
     }
 
     // All machines have terminated, so we can get the output from the last one

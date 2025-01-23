@@ -45,7 +45,7 @@ function visitAll(cpu: IntcodeCPU): {
       const nextSteps = steps + 1;
       nextCPU.writeInput(input);
       nextCPU.run();
-      const output = nextCPU.removeFirstOutput();
+      const output = nextCPU.output.dequeue();
 
       if (output === OXYGEN) {
         // we found it!

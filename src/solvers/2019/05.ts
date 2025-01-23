@@ -11,7 +11,7 @@ export default createSolverWithString(async (input) => {
   secondCPU.run();
 
   return {
-    first: firstCPU.lastOutput(),
-    second: secondCPU.lastOutput(),
+    first: firstCPU.output.peek(),
+    second: secondCPU.output.peek(),
   };
 });

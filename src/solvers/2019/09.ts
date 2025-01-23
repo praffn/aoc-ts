@@ -6,12 +6,12 @@ export default createSolverWithString(async (input) => {
 
   cpu.writeInput(1);
   cpu.run();
-  const first = cpu.removeFirstOutput();
+  const first = cpu.output.dequeue();
 
   cpu.reset();
   cpu.writeInput(2);
   cpu.run();
-  const second = cpu.removeFirstOutput();
+  const second = cpu.output.dequeue();
 
   return {
     first,
