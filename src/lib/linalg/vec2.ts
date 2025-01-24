@@ -66,3 +66,28 @@ export const directions = {
   northwest: makeVec2(-1, -1),
   southwest: makeVec2(-1, 1),
 } as const;
+
+export const cardinalDirections = [
+  directions.north,
+  directions.south,
+  directions.west,
+  directions.east,
+];
+
+export const ordinalDirections = [
+  directions.northeast,
+  directions.southeast,
+  directions.northwest,
+  directions.southwest,
+];
+
+export const allDirections = [
+  directions.north,
+  directions.south,
+  directions.west,
+  directions.east,
+  directions.northeast,
+  directions.southeast,
+  directions.northwest,
+  directions.southwest,
+];
