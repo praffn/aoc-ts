@@ -22,6 +22,10 @@ export class StructuralSet<T> {
     return this.#keyFn(value);
   }
 
+  clone() {
+    return new StructuralSet(this.#keyFn, this.#set.values());
+  }
+
   add(value: T) {
     this.#set.set(this.key(value), value);
   }
