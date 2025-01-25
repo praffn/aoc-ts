@@ -23,3 +23,28 @@ export function lcm(a: number, b: number) {
   }
   return (b / gcd(b, a)) * a;
 }
+
+export function invmod(a: number, m: number) {
+  a = mod(a, m);
+  for (let x = 1; x < m; x++) {
+    if (mod(a * x, m) === 1) {
+      return x;
+    }
+  }
+  return -1;
+}
+
+export function modexp(base: bigint, exp: bigint, mod: bigint): bigint {
+  if (mod === 1n) return 0n;
+  let result = 1n;
+  base = ((base % mod) + mod) % mod;
+  while (exp > 0n) {
+    if (exp % 2n === 1n) {
+      result = (result * base) % mod;
+    }
+    base = (base * base) % mod;
+    exp /= 2n;
+  }
+
+  return result;
+}
