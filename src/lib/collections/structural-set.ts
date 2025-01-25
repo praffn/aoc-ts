@@ -50,6 +50,10 @@ export class StructuralSet<T> {
     return Array.from(this.#set.values());
   }
 
+  values() {
+    return this.#set.values();
+  }
+
   [Symbol.iterator]() {
     return this.#set.values();
   }
