@@ -84,6 +84,10 @@ export class IntcodeCPU {
     this.input.enqueueAll(values);
   }
 
+  writeInputString(value: string) {
+    this.writeInput(value.split("").map((c) => c.charCodeAt(0)));
+  }
+
   /**
    * Returns the value in memory at the given address
    */
