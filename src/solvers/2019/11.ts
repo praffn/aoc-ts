@@ -74,19 +74,20 @@ function paintToGrid(paintMap: StructuralMap<Vec2, number>) {
   return grid;
 }
 
-export default createSolverWithString(async (input) => {
+export default createSolverWithString(async (input, extra) => {
   const cpu = new IntcodeCPU(input);
 
   const paintMapWithBlackStart = performPaint(cpu, 0);
 
-  // Uncomment below code to print solution to part 2
-  // cpu.reset();
-  // const paintMapWithWhiteStart = performPaint(cpu, 1);
-  // const grid = paintToGrid(paintMapWithWhiteStart);
-  // console.log(grid.toString());
+  if (extra) {
+    cpu.reset();
+    const paintMapWithWhiteStart = performPaint(cpu, 1);
+    const grid = paintToGrid(paintMapWithWhiteStart);
+    console.log(grid.toString());
+  }
 
   return {
     first: paintMapWithBlackStart.size,
-    second: "uncomment and see console",
+    second: extra ? "See above" : "Pass -x to see image",
   };
 });

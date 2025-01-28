@@ -27,7 +27,7 @@ function rotateRow<T>(grid: Grid2D<T>, y: number, by: number) {
   }
 }
 
-export default createSolver(async (input) => {
+export default createSolver(async (input, extra) => {
   const grid = new Grid2D(50, 6, " ");
 
   for await (const line of input) {
@@ -52,11 +52,12 @@ export default createSolver(async (input) => {
     }
   }
 
-  // Uncomment next line to print the grid for the answer to the second part
-  // console.log(grid.toString());
+  if (extra) {
+    console.log(grid.toString());
+  }
 
   return {
     first: grid.count((v) => v === "#"),
-    second: "print grid please",
+    second: extra ? "See above" : "Pass -x to see image",
   };
 });

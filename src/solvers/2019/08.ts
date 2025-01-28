@@ -8,7 +8,7 @@ const HEIGHT = 6;
 const BLACK = " ";
 const WHITE = "#";
 
-export default createSolverWithString(async (input) => {
+export default createSolverWithString(async (input, extra) => {
   const imageData = input.split("").map((n) => parseInt(n, 10));
 
   let fewestZeroes = Infinity;
@@ -38,13 +38,12 @@ export default createSolverWithString(async (input) => {
     }
   }
 
-  // Uncomment below to see the final image printed
-  // console.log();
-  // console.log(finalImage.toString());
-  // console.log();
+  if (extra) {
+    console.log(finalImage.toString());
+  }
 
   return {
     first: bestCounts.get(1)! * bestCounts.get(2)!,
-    second: "Uncomment and see console",
+    second: extra ? "See above" : "Pass -x to see image",
   };
 });

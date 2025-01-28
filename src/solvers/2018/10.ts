@@ -36,7 +36,7 @@ function print(
   console.log(grid.toString());
 }
 
-export default createSolverWithLineArray(async (input) => {
+export default createSolverWithLineArray(async (input, extra) => {
   const points = input.map(parsePoint);
 
   let smallestArea = Infinity;
@@ -64,11 +64,12 @@ export default createSolverWithLineArray(async (input) => {
     }
   }
 
-  // Uncomment line below to print message for part 1
-  // print(points, smallestAreaTime, smallestDimensions);
+  if (extra) {
+    print(points, smallestAreaTime, smallestDimensions);
+  }
 
   return {
-    first: "Uncomment code to see solution",
+    first: extra ? "See above" : "Pass -x to see solution",
     second: smallestAreaTime,
   };
 });
