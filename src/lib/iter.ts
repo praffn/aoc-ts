@@ -389,6 +389,24 @@ export function* chunk<T>(iterable: Iterable<T>, chunkSize: number) {
   }
 }
 
+export function* chunkWhile<T>(iterable: Iterable<T>, predicate: Predicate<T>) {
+  let chunk: Array<T> = [];
+  for (const item of iterable) {
+    if (predicate(item)) {
+      chunk.push(item);
+    } else {
+      if (chunk.length > 0) {
+        yield chunk;
+        chunk = [];
+      }
+    }
+  }
+
+  if (chunk.length > 0) {
+    yield chunk;
+  }
+}
+
 export function* powerSet<T>(iterable: Iterable<T>): Generator<Array<T>> {
   const items = Array.from(iterable);
   const size = 2n ** BigInt(items.length);

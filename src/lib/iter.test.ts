@@ -22,6 +22,8 @@ import {
   zip,
   count,
   powerSet,
+  chunk,
+  chunkWhile,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -478,6 +480,34 @@ describe("lib > iter", () => {
         [2, 3],
         [1, 2, 3],
       ].sort();
+
+      t.assert.deepEqual(actual, expected);
+    });
+  });
+
+  describe("chunk", () => {
+    it("should chunk the iterable", (t) => {
+      const actual = Array.from(chunk([1, 2, 3, 4, 5, 6, 7, 8], 3));
+      const expected = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8],
+      ];
+
+      t.assert.deepEqual(actual, expected);
+    });
+  });
+
+  describe("chunkWhile", () => {
+    it("should chunk the iterable", (t) => {
+      const actual = Array.from(
+        chunkWhile(
+          [1, 2, 3, "foo", 4, 5, 6, "bar", 7, "baz", "qux", 8],
+          (n) => typeof n === "number"
+        )
+      );
+
+      const expected = [[1, 2, 3], [4, 5, 6], [7], [8]];
 
       t.assert.deepEqual(actual, expected);
     });
