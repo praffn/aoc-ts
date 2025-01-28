@@ -52,7 +52,9 @@ export function unkey(s: string): Vec2 {
   return makeVec2(x, y);
 }
 
-export function manhattan(a: Vec2, b: Vec2): number {
+export function manhattan(v: Vec2): number;
+export function manhattan(a: Vec2, b: Vec2): number;
+export function manhattan(a: Vec2, b = zero): number {
   return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 }
 
