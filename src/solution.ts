@@ -61,7 +61,7 @@ export function createSolverWithString(
 ): Solver {
   const wrappedSolver = createSolverWithLineArray(
     async (lines, extra, ...args: Array<any>) => {
-      return solver(lines.join(), extra, ...args);
+      return solver(lines.join("\n"), extra, ...args);
     }
   );
 
