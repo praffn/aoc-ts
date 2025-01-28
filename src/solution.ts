@@ -9,6 +9,7 @@ export interface Solution {
 
 export type Solver = (
   input: LineReader,
+  extra?: boolean,
   ...args: Array<any>
 ) => Promise<Solution>;
 
@@ -36,23 +37,31 @@ export async function getSolver(year: number, day: number): Promise<Solver> {
 export function createSolverWithLineArray(
   solver: (input: Array<string>, ...args: Array<any>) => Promise<Solution>
 ): Solver {
-  const wrappedSolver = async (input: LineReader, ...args: Array<any>) => {
+  const wrappedSolver = async (
+    input: LineReader,
+    extra?: boolean,
+    ...args: Array<any>
+  ) => {
     const lines = [];
     for await (const line of input) {
       lines.push(line);
     }
-    return solver(lines, ...args);
+    return solver(lines, extra, ...args);
   };
 
   return createSolver(wrappedSolver);
 }
 
 export function createSolverWithString(
-  solver: (input: string, ...args: Array<any>) => Promise<Solution>
+  solver: (
+    input: string,
+    extra?: boolean,
+    ...args: Array<any>
+  ) => Promise<Solution>
 ): Solver {
   const wrappedSolver = createSolverWithLineArray(
-    async (lines, ...args: Array<any>) => {
-      return solver(lines.join(), ...args);
+    async (lines, extra, ...args: Array<any>) => {
+      return solver(lines.join(), extra, ...args);
     }
   );
 
@@ -60,21 +69,32 @@ export function createSolverWithString(
 }
 
 export function createSolverWithNumber(
-  solver: (input: number, ...args: Array<any>) => Promise<Solution>
+  solver: (
+    input: number,
+    extra?: boolean,
+    ...args: Array<any>
+  ) => Promise<Solution>
 ): Solver {
-  const wrappedSolver = createSolverWithString((input, ...args: Array<any>) => {
-    return solver(Number.parseInt(input), ...args);
-  });
+  const wrappedSolver = createSolverWithString(
+    (input, extra, ...args: Array<any>) => {
+      return solver(Number.parseInt(input), extra, ...args);
+    }
+  );
 
   return createSolver(wrappedSolver);
 }
 
 export function createSolverWithNumberArray(
-  solver: (input: Array<number>, ...args: Array<any>) => Promise<Solution>
+  solver: (
+    input: Array<number>,
+    extra?: boolean,
+    ...args: Array<any>
+  ) => Promise<Solution>
 ): Solver {
-  const wrappedSolver = createSolverWithLineArray((lines, ...args) =>
+  const wrappedSolver = createSolverWithLineArray((lines, extra, ...args) =>
     solver(
       lines.map((n) => Number.parseInt(n)),
+      extra,
       ...args
     )
   );

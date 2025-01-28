@@ -62,7 +62,7 @@ function findCheatyPairs(
   return count;
 }
 
-export default createSolverWithLineArray(async (input, minSave = 100) => {
+export default createSolverWithLineArray(async (input, _, minSave = 100) => {
   const raceTrack = Grid2D.fromLines(input);
   const startPosition = makeVec2(...raceTrack.findPosition((n) => n === "S")!);
   const distances = pathWithDistances(raceTrack, startPosition);

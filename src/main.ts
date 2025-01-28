@@ -18,6 +18,10 @@ const parseArgsConfig = {
       short: "i",
       default: "-",
     },
+    extra: {
+      type: "boolean",
+      short: "x",
+    },
     help: {
       type: "boolean",
       short: "h",
@@ -31,6 +35,7 @@ function printUsage() {
 \t-y, --year <year>    The year to run the solver for. Defaults to the current year.
 \t-d, --day <day>      The day to run the solver for. Required.
 \t-i, --input <file>   The input file to read from. Use "-" for stdin. Defaults to stdin.
+\t-x, --extra          If possible, try to run "extra" stuff (playable game, visual output etc)
 \t-h, --help           Print this help message.`;
 
   console.error(usage);
@@ -73,7 +78,7 @@ async function run() {
       const lineReader = createLineReader(args.input);
 
       const start = getNanoseconds();
-      const solution = await solver(lineReader);
+      const solution = await solver(lineReader, args.extra);
       const end = getNanoseconds();
       const elapsed = (end - start) / 1e6;
       lineReader.close();

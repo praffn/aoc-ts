@@ -20,7 +20,7 @@ test("2024.20", async (t) => {
 ###############`;
 
   const lineReader = createLineReaderFromString(input);
-  const result = await solver(lineReader, 64);
+  const result = await solver(lineReader, false, 64);
 
   t.assert.equal(result.first, 1);
   t.assert.equal(result.second, 86);
