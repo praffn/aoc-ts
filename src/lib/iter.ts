@@ -388,3 +388,18 @@ export function* chunk<T>(iterable: Iterable<T>, chunkSize: number) {
     yield chunk;
   }
 }
+
+export function* powerSet<T>(iterable: Iterable<T>): Generator<Array<T>> {
+  const items = Array.from(iterable);
+  const size = 2n ** BigInt(items.length);
+  for (let i = 0; i < size; i++) {
+    const current = [];
+    for (let j = 0; j < items.length; j++) {
+      if ((i & (1 << j)) > 0) {
+        current.push(items[j]);
+      }
+    }
+
+    yield current;
+  }
+}

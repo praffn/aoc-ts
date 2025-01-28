@@ -21,6 +21,7 @@ import {
   sum,
   zip,
   count,
+  powerSet,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -462,5 +463,23 @@ describe("lib > iter", () => {
       const actual = isMonotonic(ns);
       t.assert.equal(actual, expected, `isMonotonic(${ns}) => ${expected}`);
     }
+  });
+
+  describe("powerSet", () => {
+    it("should return the power set of the given iterable", (t) => {
+      const actual = Array.from(powerSet([1, 2, 3])).sort();
+      const expected = [
+        [],
+        [1],
+        [2],
+        [1, 2],
+        [3],
+        [1, 3],
+        [2, 3],
+        [1, 2, 3],
+      ].sort();
+
+      t.assert.deepEqual(actual, expected);
+    });
   });
 });
