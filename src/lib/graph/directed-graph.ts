@@ -139,6 +139,21 @@ export class DirectedGraph<V> {
   }
 
   /**
+   * Returns an iterator over all the incoming edges to the vertex.
+   * This is a potentially expensive operation
+   */
+  *incomingEdges(vertex: V) {
+    const incoming = new Set<V>();
+    const key = this.key(vertex);
+    for (const [fromKey, neighbors] of this.#adjacencyList) {
+      if (neighbors.has(key)) {
+        const from = this.#vertexMap.get(fromKey)!;
+        yield [from, vertex, neighbors.get(key)!] as const;
+      }
+    }
+  }
+
+  /**
    * Returns the weight of the edge from `from` to `to`. If the edge does not
    * exist, this method returns undefined.
    * @param from

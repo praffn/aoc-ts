@@ -269,4 +269,19 @@ describe("DirectedGraph", () => {
       t.assert.deepEqual(result, ["A", "B", "C", "D"]);
     });
   });
+
+  describe("incomingEdges", () => {
+    it("should return an iterator over all the incoming edges to the vertex", (t) => {
+      const graph = new DirectedGraph<number>();
+      graph.addEdge(1, 2);
+      graph.addEdge(1, 3, 100);
+      graph.addEdge(2, 3, 42);
+
+      const incoming = Array.from(graph.incomingEdges(3)).toSorted();
+      t.assert.deepEqual(incoming, [
+        [1, 3, 100],
+        [2, 3, 42],
+      ]);
+    });
+  });
 });
