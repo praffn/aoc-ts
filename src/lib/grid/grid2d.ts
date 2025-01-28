@@ -136,7 +136,8 @@ export class Grid2D<T> {
 
   *neighborsWithDiagonals(
     x: number,
-    y: number
+    y: number,
+    predicate?: (value: T) => boolean
   ): Generator<{ value: T; x: number; y: number }> {
     for (let i = 0; i < 8; i++) {
       const [dx, dy] = DIRECTIONS[i];
@@ -144,7 +145,10 @@ export class Grid2D<T> {
       const ny = y + dy;
 
       if (this.isValidPosition(nx, ny)) {
-        yield { value: this.at(nx, ny), x: nx, y: ny };
+        const neighborValue = this.at(nx, ny);
+        if (predicate === undefined || predicate(neighborValue)) {
+          yield { value: neighborValue, x: nx, y: ny };
+        }
       }
     }
   }
