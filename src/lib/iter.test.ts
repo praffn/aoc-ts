@@ -24,6 +24,7 @@ import {
   powerSet,
   chunk,
   chunkWhile,
+  minBy,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -335,6 +336,33 @@ describe("lib > iter", () => {
     test("returns the smallest number", (t) => {
       const actual = min([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]);
       t.assert.equal(actual, 1);
+    });
+  });
+
+  describe("minBy", () => {
+    it("should return the item with the smallest selector value", (t) => {
+      const items = ["foo3", "bar1", "baz4", "qux2"];
+      const actual = minBy(items, (item) =>
+        Number.parseInt(item.slice(-1), 10)
+      );
+
+      t.assert.equal(actual, "bar1");
+    });
+
+    it("should return the first item with the smallest selector value", (t) => {
+      const items = ["foo3", "bar1", "baz1", "qux2"];
+      const actual = minBy(items, (item) =>
+        Number.parseInt(item.slice(-1), 10)
+      );
+
+      t.assert.equal(actual, "bar1");
+    });
+
+    it("should return undefined for an empty iterable", (t) => {
+      t.assert.equal(
+        minBy([], (n) => n),
+        undefined
+      );
     });
   });
 

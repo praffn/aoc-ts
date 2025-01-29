@@ -333,6 +333,23 @@ export function min(
   return min === Infinity ? defaultValue : min;
 }
 
+export function minBy<T>(
+  iterable: Iterable<T>,
+  selector: (item: T) => number
+): T | undefined {
+  let min = Infinity;
+  let minItem: T | undefined = undefined;
+  for (const item of iterable) {
+    const value = selector(item);
+    if (value < min) {
+      min = value;
+      minItem = item;
+    }
+  }
+
+  return minItem;
+}
+
 export function sum(ns: Iterable<number>): number {
   let sum = 0;
   for (const n of ns) {
