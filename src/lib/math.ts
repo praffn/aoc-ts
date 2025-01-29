@@ -1,4 +1,6 @@
-export function mod(a: number, b: number) {
+export function mod(a: number, b: number): number;
+export function mod(a: bigint, b: bigint): bigint;
+export function mod(a: any, b: any): number | bigint {
   return ((a % b) + b) % b;
 }
 
@@ -24,14 +26,27 @@ export function lcm(a: number, b: number) {
   return (b / gcd(b, a)) * a;
 }
 
-export function invmod(a: number, m: number) {
+export function invmod(a: number, m: number): number;
+export function invmod(a: bigint, m: bigint): bigint;
+export function invmod(a: any, m: any): number | bigint {
+  const one = typeof a === "bigint" ? 1n : 1;
   a = mod(a, m);
-  for (let x = 1; x < m; x++) {
-    if (mod(a * x, m) === 1) {
+  for (let x: any = one; x < m; x++) {
+    if (mod(a * x, m) === one) {
       return x;
     }
   }
-  return -1;
+  return -one;
+}
+
+export function bigInvmod(a: bigint, m: bigint) {
+  a = mod(a, m);
+  for (let x = 1n; x < m; x++) {
+    if (mod(a * x, m) === 1n) {
+      return x;
+    }
+  }
+  return -1n;
 }
 
 export function modexp(base: bigint, exp: bigint, mod: bigint): bigint {
