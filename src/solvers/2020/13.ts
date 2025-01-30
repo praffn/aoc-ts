@@ -1,5 +1,6 @@
-import { enumerate, numericProduct } from "../../lib/iter";
-import { invmod, mod } from "../../lib/math";
+import { enumerate } from "../../lib/iter";
+import { invmod, mod as bigMod } from "../../lib/math/bigmath";
+import { mod } from "../../lib/math/math";
 import { createSolverWithLineArray } from "../../solution";
 
 function minBy<T>(
@@ -44,7 +45,7 @@ function solveSecond(busses: Array<number>) {
     sum += a * p * invmod(p, n);
   }
 
-  return mod(sum, N);
+  return bigMod(sum, N);
 }
 
 export default createSolverWithLineArray(async (input) => {

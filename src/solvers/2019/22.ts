@@ -1,4 +1,4 @@
-import { modexp } from "../../lib/math";
+import { modexp } from "../../lib/math/bigmath";
 import { createSolverWithLineArray } from "../../solution";
 
 type Step =

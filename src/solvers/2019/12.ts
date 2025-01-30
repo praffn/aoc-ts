@@ -1,5 +1,5 @@
 import { combinations, range } from "../../lib/iter";
-import { lcm } from "../../lib/math";
+import { lcm } from "../../lib/math/math";
 import { createSolverWithLineArray } from "../../solution";
 
 const re = /<x=(-?\d+), y=(-?\d+), z=(-?\d+)>/;

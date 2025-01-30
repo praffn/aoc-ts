@@ -1,6 +1,6 @@
 import { numericProduct } from "../../lib/iter";
 import { makeVec2, type Vec2 } from "../../lib/linalg/vec2";
-import { mod } from "../../lib/math";
+import { mod } from "../../lib/math/math";
 import { createSolver } from "../../solution";
 
 interface Robot {

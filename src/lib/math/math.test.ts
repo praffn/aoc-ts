@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import { gcd, lcm, mod, modexp } from "./math";
 
-describe("lib/math", () => {
+describe("lib/math/math", () => {
   describe("mod", () => {
     it("should return floored division modulo", (t) => {
       const tests = [
@@ -75,15 +75,14 @@ describe("lib/math", () => {
   describe("modexp", () => {
     it("should return the modular exponentiation", (t) => {
       const tests = [
-        [2n, 3n, 5n, 3n],
-        [5n, 0n, 7n, 1n], // <- power of zero
-        [6n, 1n, 13n, 6n], // <- power of one
-        [4n, 5n, 1n, 0n], // <- mod 1
-        [987654321n, 123456789n, 1000000007n, 379110096n], // <- large numbers
-        [7n, 4n, 7n, 0n], // <- base = modulo
-        [3n, 7n, 11n, 9n], // <- prime modulo
-        [-3n, 3n, 7n, 1n], // <- negative base
-        [0n, 5n, 9n, 0n], // <- base = 0
+        [2, 3, 5, 3],
+        [5, 0, 7, 1], // <- power of zero
+        [6, 1, 13, 6], // <- power of one
+        [4, 5, 1, 0], // <- mod 1
+        [7, 4, 7, 0], // <- base = modulo
+        [3, 7, 11, 9], // <- prime modulo
+        [-3, 3, 7, 1], // <- negative base
+        [0, 5, 9, 0], // <- base = 0
       ] as const;
 
       for (const [base, exp, mod, expected] of tests) {

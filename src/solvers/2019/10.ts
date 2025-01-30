@@ -1,6 +1,6 @@
 import { StructuralSet } from "../../lib/collections/structural-set";
 import { add, key, makeVec2, zero, type Vec2 } from "../../lib/linalg/vec2";
-import { gcd } from "../../lib/math";
+import { gcd } from "../../lib/math/math";
 import { createSolverWithLineArray } from "../../solution";
 
 // Thanks to https://www.reddit.com/r/adventofcode/comments/e8m1z3/comment/fad63tw
