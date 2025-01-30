@@ -45,3 +45,34 @@ export function manhattan(v: Vec3, w = zero): number {
 export function key(v: Vec3): string {
   return `${v.x},${v.y},${v.z}`;
 }
+
+export function generateAllDirectionalOffsets() {
+  return [
+    makeVec3(-1, -1, -1),
+    makeVec3(-1, -1, 0),
+    makeVec3(-1, -1, 1),
+    makeVec3(-1, 0, -1),
+    makeVec3(-1, 0, 0),
+    makeVec3(-1, 0, 1),
+    makeVec3(-1, 1, -1),
+    makeVec3(-1, 1, 0),
+    makeVec3(-1, 1, 1),
+    makeVec3(0, -1, -1),
+    makeVec3(0, -1, 0),
+    makeVec3(0, -1, 1),
+    makeVec3(0, 0, -1),
+    makeVec3(0, 0, 1),
+    makeVec3(0, 1, -1),
+    makeVec3(0, 1, 0),
+    makeVec3(0, 1, 1),
+    makeVec3(1, -1, -1),
+    makeVec3(1, -1, 0),
+    makeVec3(1, -1, 1),
+    makeVec3(1, 0, -1),
+    makeVec3(1, 0, 0),
+    makeVec3(1, 0, 1),
+    makeVec3(1, 1, -1),
+    makeVec3(1, 1, 0),
+    makeVec3(1, 1, 1),
+  ];
+}
