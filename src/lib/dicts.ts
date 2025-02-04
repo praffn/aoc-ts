@@ -26,3 +26,17 @@ export function getOrSet<K, V>(map: Map<K, V>, key: K, value: () => V): V {
   map.set(key, newValue);
   return newValue;
 }
+
+export function mapIncrement<T>(map: Map<T, number>, key: T): Map<T, number>;
+export function mapIncrement<T>(
+  map: Map<T, number>,
+  key: T,
+  amount: number
+): Map<T, number>;
+export function mapIncrement<T>(
+  map: Map<T, number>,
+  key: T,
+  amount = 1
+): Map<T, number> {
+  return map.set(key, (map.get(key) ?? 0) + amount);
+}
