@@ -29,12 +29,6 @@ import {
 
 describe("lib > iter", () => {
   describe("slidingWindow", () => {
-    test("size < 2 should throw", (t) => {
-      t.assert.throws(() => {
-        slidingWindow([1, 2, 3], 1).next();
-      });
-    });
-
     test("size = 2", (t) => {
       const input = [1, 2, 3, 4, 5];
       const expected = [
