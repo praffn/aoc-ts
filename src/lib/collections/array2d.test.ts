@@ -170,6 +170,24 @@ describe("lib/collections/array2d", () => {
     });
   });
 
+  describe("rows", () => {
+    it("should return an iterator over all rows", (t) => {
+      const grid = new Array2D([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+      ]);
+
+      const rows = Array.from(grid.rows());
+
+      t.assert.deepEqual(rows, [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+      ]);
+    });
+  });
+
   describe("column", () => {
     it("should return an iterator over the given column", (t) => {
       const grid = new Array2D([
@@ -191,6 +209,24 @@ describe("lib/collections/array2d", () => {
 
       const column = Array.from(grid.column(-1));
       t.assert.deepEqual(column, [3, 6, 9]);
+    });
+  });
+
+  describe("columns", () => {
+    it("should return an iterator over all columns", (t) => {
+      const grid = new Array2D([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+      ]);
+
+      const rows = Array.from(grid.columns());
+
+      t.assert.deepEqual(rows, [
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+      ]);
     });
   });
 

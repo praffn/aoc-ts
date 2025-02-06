@@ -90,10 +90,22 @@ export class Array2D<T> {
     return this.#data.length;
   }
 
+  *rows() {
+    for (let y = 0; y < this.#height; y++) {
+      yield Array.from(this.row(y));
+    }
+  }
+
   *row(y: number) {
     y = y < 0 ? this.#height + y : y;
     for (let x = 0; x < this.#width; x++) {
       yield this.get(x, y);
+    }
+  }
+
+  *columns() {
+    for (let x = 0; x < this.#width; x++) {
+      yield Array.from(this.column(x));
     }
   }
 
