@@ -434,3 +434,20 @@ export function* powerSet<T>(iterable: Iterable<T>): Generator<Array<T>> {
     yield current;
   }
 }
+
+export function combine<T, U>(a: Iterable<T>, b: Iterable<U>): Generator<T | U>;
+export function combine<T, U, V>(
+  a: Iterable<T>,
+  b: Iterable<U>,
+  c: Iterable<V>
+): Generator<T | U | V>;
+export function combine(
+  ...iterables: Array<Iterable<unknown>>
+): Generator<unknown>;
+export function* combine(
+  ...iterables: Array<Iterable<unknown>>
+): Generator<unknown> {
+  for (const iterable of iterables) {
+    yield* iterable;
+  }
+}

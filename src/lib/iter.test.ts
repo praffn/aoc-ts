@@ -25,6 +25,7 @@ import {
   chunk,
   chunkWhile,
   minBy,
+  combine,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -532,6 +533,28 @@ describe("lib > iter", () => {
       const expected = [[1, 2, 3], [4, 5, 6], [7], [8]];
 
       t.assert.deepEqual(actual, expected);
+    });
+  });
+
+  describe("combine", (t) => {
+    it("should combine two iterables", (t) => {
+      const a = [1, 2, 3];
+      const b = ["a", "b", "c"];
+      const actual = Array.from(combine(a, b));
+
+      const expected = [1, 2, 3, "a", "b", "c"];
+      t.assert.deepEqual(actual, expected);
+    });
+
+    it("should combine multiple iterables", (t) => {
+      const a = [1];
+      const b = ["a", "b"];
+      const c = [true, false, true];
+      const d = [1n, 2n, 3n, 4n];
+
+      const expected = [1, "a", "b", true, false, true, 1n, 2n, 3n, 4n];
+
+      t.assert.deepEqual(Array.from(combine(a, b, c, d)), expected);
     });
   });
 });
