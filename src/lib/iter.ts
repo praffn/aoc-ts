@@ -10,10 +10,6 @@ export function* slidingWindow<T>(
   ns: Iterable<T>,
   size: number
 ): Generator<T[]> {
-  if (size < 2) {
-    throw new Error("Size must be at least 2");
-  }
-
   const buffer: Array<T> = [];
 
   const it = ns[Symbol.iterator]();
