@@ -1,3 +1,44 @@
+const cardinals = [
+  // top
+  [0, -1],
+  // right
+  [1, 0],
+  // bottom
+  [0, 1],
+  // left
+  [-1, 0],
+];
+
+const diagonals = [
+  // top-left
+  [-1, -1],
+  // top-right
+  [1, -1],
+  // bottom-right
+  [1, 1],
+  // bottom-left
+  [-1, 1],
+];
+
+const moore = [
+  // top
+  [0, -1],
+  // top-right
+  [1, -1],
+  // right
+  [1, 0],
+  // bottom-right
+  [1, 1],
+  // bottom
+  [0, 1],
+  // bottom-left
+  [-1, 1],
+  // left
+  [-1, 0],
+  // top-left
+  [-1, -1],
+];
+
 export class Array2D<T> {
   #data: Array<T>;
   #width: number;
@@ -336,7 +377,8 @@ export class Array2D<T> {
    * The order is row-major.
    */
   *[Symbol.iterator]() {
-    for (const [value, index] of this.#data.entries()) {
+    for (const value of this.#data) {
+      yield value;
     }
   }
 
@@ -493,5 +535,51 @@ export class Array2D<T> {
     }
 
     return [max!, maxX, maxY];
+  }
+
+  /**
+   * Returns an iterator over the given coordinates cardinal neighbors.
+   * The order is: top, right, bottom, left.
+   * For edge/corner cells, the neighbors that are out of bounds are skipped.
+   */
+  *neighbors(x: number, y: number): Generator<[T, number, number]> {
+    for (const [dx, dy] of cardinals) {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (this.isInBounds(nx, ny)) {
+        yield [this.get(nx, ny), nx, ny];
+      }
+    }
+  }
+
+  /**
+   * Returns an iterator over the given coordinates diagonal neighbors.
+   * The order is: top-left, top-right, bottom-right, bottom-left.
+   * For edge/corner cells, the neighbors that are out of bounds are skipped.
+   */
+  *diagonalNeighbors(x: number, y: number): Generator<[T, number, number]> {
+    for (const [dx, dy] of diagonals) {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (this.isInBounds(nx, ny)) {
+        yield [this.get(nx, ny), nx, ny];
+      }
+    }
+  }
+
+  /**
+   * Returns an iterator over the given coordinates Moore neighbors.
+   * The order is: top, top-right, right, bottom-right, bottom, bottom-left,
+   * left, top-left.
+   * For edge/corner cells, the neighbors that are out of bounds are skipped.
+   */
+  *mooreNeighbors(x: number, y: number): Generator<[T, number, number]> {
+    for (const [dx, dy] of moore) {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (this.isInBounds(nx, ny)) {
+        yield [this.get(nx, ny), nx, ny];
+      }
+    }
   }
 }

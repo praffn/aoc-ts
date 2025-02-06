@@ -826,4 +826,114 @@ describe("lib/collections/array2d", () => {
       t.assert.equal(y, 1);
     });
   });
+
+  describe("neighbors", () => {
+    it("should yield all cardinal neighbors", (t) => {
+      const grid = new Array2D([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+      ]);
+
+      const actual = Array.from(grid.neighbors(2, 1));
+      const expected = [
+        [3, 2, 0],
+        [8, 3, 1],
+        [11, 2, 2],
+        [6, 1, 1],
+      ];
+
+      t.assert.deepEqual(actual, expected);
+    });
+
+    it("should skip out of bounds neighbors", (t) => {
+      const grid = new Array2D([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+      ]);
+
+      const actual = Array.from(grid.neighbors(3, 2));
+      const expected = [
+        [8, 3, 1],
+        [11, 2, 2],
+      ];
+
+      t.assert.deepEqual(actual, expected);
+    });
+  });
+
+  describe("diagonalNeighbors", () => {
+    it("should yield all diagonal neighbors", (t) => {
+      const grid = new Array2D([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+      ]);
+
+      const actual = Array.from(grid.diagonalNeighbors(2, 1));
+      const expected = [
+        [2, 1, 0],
+        [4, 3, 0],
+        [12, 3, 2],
+        [10, 1, 2],
+      ];
+
+      t.assert.deepEqual(actual, expected);
+    });
+
+    it("should skip out of bounds neighbors", (t) => {
+      const grid = new Array2D([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+      ]);
+
+      const actual = Array.from(grid.diagonalNeighbors(3, 2));
+      const expected = [[7, 2, 1]];
+
+      t.assert.deepEqual(actual, expected);
+    });
+  });
+
+  describe("mooreNeighbors", () => {
+    it("should yield all moore neighbors", (t) => {
+      const grid = new Array2D([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+      ]);
+
+      const actual = Array.from(grid.mooreNeighbors(2, 1));
+      const expected = [
+        [3, 2, 0],
+        [4, 3, 0],
+        [8, 3, 1],
+        [12, 3, 2],
+        [11, 2, 2],
+        [10, 1, 2],
+        [6, 1, 1],
+        [2, 1, 0],
+      ];
+
+      t.assert.deepEqual(actual, expected);
+    });
+
+    it("should skip out of bounds neighbors", (t) => {
+      const grid = new Array2D([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+      ]);
+
+      const actual = Array.from(grid.mooreNeighbors(3, 2));
+      const expected = [
+        [8, 3, 1],
+        [11, 2, 2],
+        [7, 2, 1],
+      ];
+
+      t.assert.deepEqual(actual, expected);
+    });
+  });
 });
