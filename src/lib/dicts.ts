@@ -40,3 +40,17 @@ export function mapIncrement<T>(
 ): Map<T, number> {
   return map.set(key, (map.get(key) ?? 0) + amount);
 }
+
+export function mapDecrement<T>(map: Map<T, number>, key: T): Map<T, number>;
+export function mapDecrement<T>(
+  map: Map<T, number>,
+  key: T,
+  amount: number
+): Map<T, number>;
+export function mapDecrement<T>(
+  map: Map<T, number>,
+  key: T,
+  amount = 1
+): Map<T, number> {
+  return mapIncrement(map, key, -amount);
+}
