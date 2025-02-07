@@ -26,6 +26,7 @@ import {
   chunkWhile,
   minBy,
   combine,
+  minMax,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -375,6 +376,20 @@ describe("lib > iter", () => {
     test("returns the largest number", (t) => {
       const actual = max([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]);
       t.assert.equal(actual, 9);
+    });
+  });
+
+  describe("minMax", () => {
+    it("should return the min and max values", (t) => {
+      const [actualMin, actualMax] = minMax([29, 3, -200, 0, 42, 100]);
+      t.assert.equal(actualMin, -200);
+      t.assert.equal(actualMax, 100);
+    });
+
+    it("should return infinities for an empty iterable", (t) => {
+      const [actualMin, actualMax] = minMax([]);
+      t.assert.equal(actualMin, Infinity);
+      t.assert.equal(actualMax, -Infinity);
     });
   });
 
