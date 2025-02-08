@@ -129,7 +129,7 @@ export function* cartesianRange(
   xEnd: number,
   yStart: number,
   yEnd: number
-) {
+): Generator<[number, number]> {
   for (const x of range(xStart, xEnd)) {
     for (const y of range(yStart, yEnd)) {
       yield [x, y];
