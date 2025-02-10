@@ -168,15 +168,15 @@ export function* enumerate<T>(
   return yield* zip(range(0, Infinity), iterable);
 }
 
-export function permutations<T>(iterable: Iterable<T>): Iterable<Array<T>>;
+export function permutations<T>(iterable: Iterable<T>): Generator<Array<T>>;
 export function permutations<T>(
   iterable: Iterable<T>,
   r: number
-): Iterable<Array<T>>;
+): Generator<Array<T>>;
 export function* permutations<T>(
   iterable: Iterable<T>,
   r?: number
-): Iterable<Array<T>> {
+): Generator<Array<T>> {
   const items = Array.from(iterable);
   r ??= items.length;
 
