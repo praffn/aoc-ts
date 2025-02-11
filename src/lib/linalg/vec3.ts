@@ -46,6 +46,10 @@ export function key(v: Vec3): string {
   return `${v.x},${v.y},${v.z}`;
 }
 
+export function hashKey(v: Vec3) {
+  return ((v.x * 73856093) ^ (v.y * 19349663) ^ (v.z * 83492791)) >>> 0;
+}
+
 export function generateAllDirectionalOffsets() {
   return [
     makeVec3(-1, -1, -1),
