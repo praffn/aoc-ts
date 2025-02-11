@@ -27,6 +27,7 @@ import {
   minBy,
   combine,
   minMax,
+  maxBy,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -376,6 +377,37 @@ describe("lib > iter", () => {
     test("returns the largest number", (t) => {
       const actual = max([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]);
       t.assert.equal(actual, 9);
+    });
+  });
+
+  describe("maxBy", () => {
+    it("should return the item with the largest selector value", (t) => {
+      const items = [
+        { age: 2 },
+        { age: 32 },
+        { age: -1 },
+        { age: 100 },
+        { age: 0 },
+      ];
+      const actual = maxBy(items, (item) => item.age);
+
+      t.assert.deepEqual(actual, { age: 100 });
+    });
+
+    it("should return the first item with the largest selector value", (t) => {
+      const items = ["foo1", "bar3", "baz2", "qux3"];
+      const actual = maxBy(items, (item) =>
+        Number.parseInt(item.slice(-1), 10)
+      );
+
+      t.assert.equal(actual, "bar3");
+    });
+
+    it("should return undefined for an empty iterable", (t) => {
+      t.assert.equal(
+        maxBy([], (n) => n),
+        undefined
+      );
     });
   });
 

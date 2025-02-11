@@ -316,6 +316,23 @@ export function max(
   return max === -Infinity ? defaultValue : max;
 }
 
+export function maxBy<T>(
+  iterable: Iterable<T>,
+  selector: (item: T) => number
+): T | undefined {
+  let max = -Infinity;
+  let maxItem: T | undefined = undefined;
+  for (const item of iterable) {
+    const value = selector(item);
+    if (value > max) {
+      max = value;
+      maxItem = item;
+    }
+  }
+
+  return maxItem;
+}
+
 export function min(ns: Iterable<number>): number | undefined;
 export function min(ns: Iterable<number>, defaultValue: number): number;
 export function min(
