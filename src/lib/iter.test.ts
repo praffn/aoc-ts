@@ -423,6 +423,20 @@ describe("lib > iter", () => {
       t.assert.equal(actualMin, Infinity);
       t.assert.equal(actualMax, -Infinity);
     });
+
+    it("should return the min and max values by a selector", (t) => {
+      const items = [
+        { age: 2 },
+        { age: 32 },
+        { age: -1 },
+        { age: 100 },
+        { age: 0 },
+      ];
+      const [actualMin, actualMax] = minMax(items, (item) => item.age);
+
+      t.assert.deepEqual(actualMin, -1);
+      t.assert.deepEqual(actualMax, 100);
+    });
   });
 
   describe("sum", () => {

@@ -363,13 +363,22 @@ export function minBy<T>(
   return minItem;
 }
 
-export function minMax(iterable: Iterable<number>): [number, number] {
+export function minMax(iterable: Iterable<number>): [number, number];
+export function minMax<T>(
+  iterable: Iterable<T>,
+  selector: (item: T) => number
+): [number, number];
+export function minMax(
+  iterable: Iterable<number>,
+  selector?: (item: unknown) => number
+): [number, number] {
   let min = Infinity;
   let max = -Infinity;
 
-  for (const n of iterable) {
-    min = Math.min(min, n);
-    max = Math.max(max, n);
+  for (const item of iterable) {
+    const v = selector ? selector(item) : item;
+    min = Math.min(min, v);
+    max = Math.max(max, v);
   }
 
   return [min, max];
