@@ -28,6 +28,7 @@ import {
   combine,
   minMax,
   maxBy,
+  productRepeat,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -283,6 +284,20 @@ describe("lib > iter", () => {
         [3, 5],
       ];
       const actual = Array.from(product([1, 2, 3], [4, 5])).toSorted();
+      t.assert.deepEqual(actual, expected);
+    });
+  });
+
+  describe("productRepeat", () => {
+    it("should return the product of the iterable repeated", (t) => {
+      const actual = Array.from(productRepeat([1, 2], 2));
+      const expected = [
+        [1, 1],
+        [1, 2],
+        [2, 1],
+        [2, 2],
+      ];
+
       t.assert.deepEqual(actual, expected);
     });
   });

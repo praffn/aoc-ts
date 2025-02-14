@@ -268,6 +268,30 @@ export function* divisors(n: number): Generator<number> {
   }
 }
 
+export function* productRepeat<T>(
+  iterable: Iterable<T>,
+  repeat: number
+): Generator<Array<T>> {
+  const pool = Array.from(iterable);
+  const n = pool.length;
+  const indices = Array(repeat).fill(0);
+
+  while (true) {
+    yield indices.map((i) => pool[i]);
+
+    let i;
+    for (i = repeat - 1; i >= 0; i--) {
+      if (indices[i] < n - 1) {
+        indices[i]++;
+        break;
+      }
+      indices[i] = 0;
+    }
+
+    if (i < 0) break;
+  }
+}
+
 // product returns a generator that yields the cartesian product of the input iterables.
 export function product<A, B>(
   a: Iterable<A>,
