@@ -1,30 +1,19 @@
 import { minBy, numericProduct, range, sum } from "../../lib/iter";
+import { Range } from "../../lib/range";
 import { createSolverWithString } from "../../solution";
 
 //#region Types & Data
 
-type InclusiveRange = {
-  min: number;
-  max: number;
-};
-
-/**
- * Returns true if the given value is in the range
- */
-function rangeContains(range: InclusiveRange, n: number) {
-  return range.min <= n && n <= range.max;
-}
-
 type Rule = {
   name: string;
-  ranges: Array<InclusiveRange>;
+  ranges: Array<Range>;
 };
 
 /**
  * Returns true if the value passes the given rule
  */
 function passes(n: number, rule: Rule) {
-  return rule.ranges.some((range) => rangeContains(range, n));
+  return rule.ranges.some((range) => range.contains(n));
 }
 
 /**
@@ -44,14 +33,8 @@ function parseRules(ruleSet: string): Array<Rule> {
 
   for (const line of ruleSet.split("\n")) {
     const [, name, min1, max1, min2, max2] = line.match(re)!;
-    const range1 = {
-      min: Number.parseInt(min1),
-      max: Number.parseInt(max1),
-    };
-    const range2 = {
-      min: Number.parseInt(min2),
-      max: Number.parseInt(max2),
-    };
+    const range1 = Range.inclusive(+min1, +max1);
+    const range2 = Range.inclusive(+min2, +max2);
     rules.push({
       name,
       ranges: [range1, range2],
