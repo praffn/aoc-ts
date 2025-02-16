@@ -42,6 +42,12 @@ describe("range", () => {
       t.assert.equal(range.fullyContains(other), true);
     });
 
+    it("should return true for itself", (t) => {
+      const range = new Range(1, 9);
+
+      t.assert.equal(range.fullyContains(range), true);
+    });
+
     it("should return false if the given range is not fully contained within this range", (t) => {
       const range = new Range(1, 9);
       const other = new Range(0, 5);

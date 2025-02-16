@@ -42,6 +42,6 @@ export class Range {
    * Returns true if the given range is fully contained within this range
    */
   fullyContains(other: Range): boolean {
-    return this.contains(other.#start) && this.contains(other.#end);
+    return this.contains(other.#start) && this.contains(other.#end - 1);
   }
 }
