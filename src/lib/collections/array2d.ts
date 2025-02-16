@@ -389,6 +389,12 @@ export class Array2D<T> {
     yield* this.#data;
   }
 
+  *coords(): Generator<[number, number]> {
+    for (let i = 0; i < this.#data.length; i++) {
+      yield this.#deindex(i);
+    }
+  }
+
   /**
    * Returns an iterator over the elements and coordinates of the array.
    */
