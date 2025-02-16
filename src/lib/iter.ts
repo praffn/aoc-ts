@@ -162,6 +162,37 @@ export function* zip<T, U>(
   }
 }
 
+export function accumulate(iterable: Iterable<number>): Generator<number>;
+export function accumulate(iterable: Iterable<string>): Generator<string>;
+export function accumulate<T>(
+  iterable: Iterable<T>,
+  accumulator: (a: T, b: T) => T
+): Generator<T>;
+export function* accumulate<T>(
+  iterable: Iterable<T>,
+  accumulator?: (a: T, b: T) => T
+): Generator<T> {
+  const it = iterable[Symbol.iterator]();
+  let { value, done } = it.next();
+
+  if (done) {
+    return;
+  }
+
+  let result = value;
+
+  while (true) {
+    yield result;
+
+    ({ value, done } = it.next());
+    if (done) {
+      return;
+    }
+
+    result = accumulator ? accumulator(result, value) : result + value;
+  }
+}
+
 export function* enumerate<T>(
   iterable: Iterable<T>
 ): IteratorObject<[number, T]> {

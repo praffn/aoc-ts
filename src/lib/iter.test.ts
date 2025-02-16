@@ -29,6 +29,7 @@ import {
   minMax,
   maxBy,
   productRepeat,
+  accumulate,
 } from "./iter";
 
 describe("lib > iter", () => {
@@ -505,6 +506,23 @@ describe("lib > iter", () => {
         [1, "b"],
         [2, "c"],
       ]);
+    });
+  });
+
+  describe("accumulate", (t) => {
+    it("can accumulate numbers", (t) => {
+      const actual = Array.from(accumulate([1, 2, 3, 4, 5]));
+      t.assert.deepEqual(actual, [1, 3, 6, 10, 15]);
+    });
+
+    it("can accumulate strings", (t) => {
+      const actual = Array.from(accumulate(["a", "b", "c", "d"]));
+      t.assert.deepEqual(actual, ["a", "ab", "abc", "abcd"]);
+    });
+
+    it('can accumulate with a custom "add" function', (t) => {
+      const actual = Array.from(accumulate([1, 2, 3, 4, 5], (a, b) => a * b));
+      t.assert.deepEqual(actual, [1, 2, 6, 24, 120]);
     });
   });
 
