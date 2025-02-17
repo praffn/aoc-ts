@@ -1,5 +1,14 @@
 import { describe, it } from "node:test";
-import { add, equals, makeVec2, manhattan, scale, sub } from "./vec2";
+import {
+  add,
+  chebyshev,
+  equals,
+  makeVec2,
+  manhattan,
+  scale,
+  sign,
+  sub,
+} from "./vec2";
 
 describe("linalg/vec2", () => {
   describe("makeVec2", () => {
@@ -62,6 +71,36 @@ describe("linalg/vec2", () => {
       const a = makeVec2(3, 6);
       const b = makeVec2(-5, 1);
       t.assert.equal(manhattan(a, b), 13);
+    });
+
+    it("should return the manhattan distance between vector and origin", (t) => {
+      const a = makeVec2(3, 6);
+      t.assert.equal(manhattan(a), 9);
+    });
+  });
+
+  describe("chebyshev", () => {
+    it("should return the chebyshev distance between two vectors", (t) => {
+      const a = makeVec2(3, 6);
+      const b = makeVec2(-5, 1);
+      t.assert.equal(chebyshev(a, b), 8);
+    });
+
+    it("should return the chebyshev distance between vector and origin", (t) => {
+      const a = makeVec2(3, 6);
+      t.assert.equal(chebyshev(a), 6);
+    });
+  });
+
+  describe("sign", () => {
+    it("should return a vector with the sign of each component", (t) => {
+      const a = makeVec2(3, -6);
+      const b = makeVec2(0, -0);
+      const expectedA = makeVec2(1, -1);
+      const expectedB = makeVec2(0, 0);
+
+      t.assert.deepEqual(sign(a), expectedA);
+      t.assert.deepEqual(sign(b), expectedB);
     });
   });
 });

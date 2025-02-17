@@ -62,6 +62,16 @@ export function manhattan(a: Vec2, b = zero): number {
   return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 }
 
+export function chebyshev(v: Vec2): number;
+export function chebyshev(a: Vec2, b: Vec2): number;
+export function chebyshev(a: Vec2, b = zero): number {
+  return Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y));
+}
+
+export function sign(v: Vec2): Vec2 {
+  return makeVec2(Math.sign(v.x), Math.sign(v.y));
+}
+
 export const directions = {
   north: makeVec2(0, -1),
   south: makeVec2(0, 1),
