@@ -194,9 +194,10 @@ export function* accumulate<T>(
 }
 
 export function* enumerate<T>(
-  iterable: Iterable<T>
+  iterable: Iterable<T>,
+  start = 0
 ): IteratorObject<[number, T]> {
-  return yield* zip(range(0, Infinity), iterable);
+  return yield* zip(range(start, Infinity), iterable);
 }
 
 export function permutations<T>(iterable: Iterable<T>): Generator<Array<T>>;

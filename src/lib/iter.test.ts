@@ -507,6 +507,15 @@ describe("lib > iter", () => {
         [2, "c"],
       ]);
     });
+
+    it("should enumerate from the given start", (t) => {
+      const actual = Array.from(enumerate(["a", "b", "c"], 42));
+      t.assert.deepEqual(actual, [
+        [42, "a"],
+        [43, "b"],
+        [44, "c"],
+      ]);
+    });
   });
 
   describe("accumulate", (t) => {
