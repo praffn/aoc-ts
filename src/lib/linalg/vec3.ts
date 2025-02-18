@@ -92,6 +92,10 @@ export function min(v: Vec3, w: Vec3 | number): Vec3 {
   return makeVec3(Math.min(v.x, w.x), Math.min(v.y, w.y), Math.min(v.z, w.z));
 }
 
+export function leq(a: Vec3, b: Vec3): boolean {
+  return a.x <= b.x && a.y <= b.y && a.z <= b.z;
+}
+
 export function generateAllDirectionalOffsets() {
   return [
     makeVec3(-1, -1, -1),
