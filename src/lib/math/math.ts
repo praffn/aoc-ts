@@ -47,3 +47,10 @@ export function modexp(base: number, exp: number, mod: number): number {
 
   return result;
 }
+
+export function divmod(
+  a: number,
+  b: number
+): [quotient: number, remainder: number] {
+  return [Math.floor(a / b), mod(a, b)];
+}

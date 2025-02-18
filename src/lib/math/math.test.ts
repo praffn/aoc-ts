@@ -1,5 +1,5 @@
 import { describe, it } from "node:test";
-import { gcd, lcm, mod, modexp } from "./math";
+import { divmod, gcd, lcm, mod, modexp } from "./math";
 
 describe("lib/math/math", () => {
   describe("mod", () => {
@@ -91,6 +91,31 @@ describe("lib/math/math", () => {
           actual,
           expected,
           `expected modexp(${base}, ${exp}, ${mod}) to be ${expected}, got ${actual}`
+        );
+      }
+    });
+  });
+
+  describe("divmod", () => {
+    it("should return the floored division and the remainder", (t) => {
+      const tests = [
+        { a: 10, b: 3, expected: [3, 1] },
+        { a: 20, b: 5, expected: [4, 0] },
+        { a: 7, b: 2, expected: [3, 1] },
+        { a: -10, b: 3, expected: [-4, 2] },
+        { a: 10, b: -3, expected: [-4, -2] },
+        { a: -10, b: -3, expected: [3, -1] },
+        { a: 0, b: 5, expected: [0, 0] },
+        { a: 10, b: 1, expected: [10, 0] },
+        { a: 10, b: 10, expected: [1, 0] },
+      ];
+
+      for (const { a, b, expected } of tests) {
+        const actual = divmod(a, b);
+        t.assert.deepEqual(
+          actual,
+          expected,
+          `expected divmod(${a}, ${b}) to be ${expected}, got ${actual}`
         );
       }
     });
