@@ -1,3 +1,5 @@
+import { mod as scalarMod } from "../math/math";
+
 export interface Vec2 {
   x: number;
   y: number;
@@ -40,7 +42,7 @@ export function scale(a: Vec2, f: number): Vec2 {
 }
 
 export function mod(a: Vec2, m: Vec2): Vec2 {
-  return makeVec2(a.x % m.x, a.y % m.y);
+  return makeVec2(scalarMod(a.x, m.x), scalarMod(a.y, m.y));
 }
 
 export function equals(a: Vec2, b: Vec2): boolean {
