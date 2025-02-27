@@ -1,83 +1,78 @@
-import { createSolver } from "../../solution";
+import { sum } from "../../lib/iter";
+import { createSolverWithLineArray } from "../../solution";
 
-interface Game {
-  id: number;
-  sets: Array<Map<string, number>>;
-}
+type Set = [red: number, green: number, blue: number];
+const colorIndex: Record<string, number> = { red: 0, green: 1, blue: 2 };
+type Game = Array<Set>;
 
-function parseGame(input: string): Game {
-  let [idPart, rest] = input.split(": ");
-  let [_, idStr] = idPart.split(" ");
-  const id = Number.parseInt(idStr, 10);
+function parseGame(line: string): Game {
+  const [_, setsRaw] = line.split(": ");
 
-  const sets = [];
-  const rawSets = rest.split("; ");
+  const game: Game = [];
 
-  for (const rawSet of rawSets) {
-    const set = new Map<string, number>();
-    const picks = rawSet.split(", ");
-
-    for (const pick of picks) {
-      const [countStr, color] = pick.split(" ");
-      const count = Number.parseInt(countStr, 10);
-      set.set(color, count);
+  for (const setRaw of setsRaw.split("; ")) {
+    const set: Set = [0, 0, 0];
+    for (const entry of setRaw.split(", ")) {
+      const [count, color] = entry.split(" ");
+      set[colorIndex[color]] = +count;
     }
-
-    sets.push(set);
+    game.push(set);
   }
 
-  return {
-    id,
-    sets,
-  };
+  return game;
 }
 
-export default createSolver(async (input) => {
-  // Maximum number of each color for a possible game
-  const maxSet = new Map([
-    ["red", 12],
-    ["green", 13],
-    ["blue", 14],
-  ]);
+/**
+ * Returns true if the game is possible, i.e. no set ever pulled more of the
+ * available red, green or blue cubes.
+ */
+function isPossible(game: Game) {
+  return game.every(([red, green, blue]) => {
+    return red <= 12 && green <= 13 && blue <= 14;
+  });
+}
 
-  let first = 0;
-  let second = 0;
+/**
+ * Returns the sum of all game ids where the game is possible
+ */
+function sumPossibleGameIds(games: Array<Game>) {
+  return sum(games.map((game, i) => (isPossible(game) ? i + 1 : 0)));
+}
 
-  for await (const line of input) {
-    const game = parseGame(line);
-
-    let isPossible = true;
-
-    // this map keeps track of the highest count of each color that was picked in the game
-    const max = new Map<string, number>();
-
-    for (const set of game.sets) {
-      for (const [color, count] of set.entries()) {
-        // update the max count of each color
-        max.set(color, Math.max(count, max.get(color) ?? 0));
-
-        if (isPossible && count > (maxSet.get(color) ?? Infinity)) {
-          // since this set requires a higher count of this color than the maximum possible, the game is not possible
-          isPossible = false;
-        }
-      }
-    }
-
-    if (isPossible) {
-      first += game.id;
-    }
-
-    // the power of a game is the product of the highest count of each color that was picked in the game
-    let power = 1;
-    for (const count of max.values()) {
-      power *= count;
-    }
-
-    second += power;
+/**
+ * Returns the minimum set of a game, i.e. the set with the lowest possible
+ * amount of red, green and blue cubes to make the game possible.
+ */
+function minimumSet(game: Game): Set {
+  let minRed = 0;
+  let minGreen = 0;
+  let minBlue = 0;
+  for (const set of game) {
+    minRed = Math.max(minRed, set[0]);
+    minGreen = Math.max(minGreen, set[1]);
+    minBlue = Math.max(minBlue, set[2]);
   }
 
+  return [minRed, minGreen, minBlue];
+}
+
+/**
+ * Returns the sum of power of each game's minimum set
+ */
+function sumMinimumSetPower(games: Array<Game>) {
+  let sum = 0;
+  for (const game of games) {
+    const [minRed, minGreen, minBlue] = minimumSet(game);
+    sum += minRed * minGreen * minBlue;
+  }
+  return sum;
+}
+
+export default createSolverWithLineArray(async (input) => {
+  const games = input.map(parseGame);
+
   return {
-    first,
-    second,
+    first: sumPossibleGameIds(games),
+    second: sumMinimumSetPower(games),
   };
 });
