@@ -1,98 +1,87 @@
+import { StructuralMap } from "../../lib/collections/structural-map";
+import { cartesianRange, sum } from "../../lib/iter";
+import { key, makeVec2, type Vec2 } from "../../lib/linalg/vec2";
 import { createSolverWithLineArray } from "../../solution";
 
-function isDigit(c: string) {
-  return c >= "0" && c <= "9";
+function isSymbol(c: string): boolean {
+  return c !== "." && !(c >= "0" && c <= "9");
+}
+
+type SymbolMap = StructuralMap<
+  Vec2,
+  { symbol: string; numbers: Array<number> }
+>;
+
+/**
+ * Parses the input into a symbol map
+ * A symbol map is a map from a position to some symbol ('*', '$' etc) and
+ * a list of the numbers that are its neighbors. The symbols in the map are
+ * guaranteed to have at least one number as a neighbor.
+ */
+function parse(input: Array<string>) {
+  const symbolMap: SymbolMap = new StructuralMap(key);
+
+  // lets loop through each line of the input
+  for (const [y, line] of input.entries()) {
+    // for each line we try to match on numbers
+    for (const match of line.matchAll(/\d+/g)) {
+      const number = +match[0];
+      const startX = match.index - 1;
+      const endX = match.index + match[0].length + 1;
+      const startY = y - 1;
+      const endY = y + 2;
+
+      // now we are going to check all coordinates around the number
+      for (const [x, y] of cartesianRange(startX, endX, startY, endY)) {
+        if (x < 0 || x >= line.length || y < 0 || y >= input.length) {
+          continue;
+        }
+
+        const c = input[y][x];
+        // if a symbol was a neighbor, we add this number to the symbol in the
+        // symbol map
+        if (isSymbol(c)) {
+          symbolMap
+            .getOrDefault(makeVec2(x, y), () => ({
+              symbol: c,
+              numbers: [],
+            }))
+            .numbers.push(number);
+        }
+      }
+    }
+  }
+
+  return symbolMap;
+}
+
+/**
+ * Just returns the sum of all numbers in the symbol map
+ */
+function solveFirst(symbolMap: SymbolMap) {
+  return sum(symbolMap.values().flatMap(({ numbers }) => numbers));
+}
+
+/**
+ * Returns the sum of all the products of numbers in the symbol map where the
+ * symbol is a gear ('*') and it has exactly two numbers as neighbors
+ */
+function solveSecond(symbolMap: SymbolMap) {
+  return sum(
+    symbolMap.values().map(({ symbol, numbers }) => {
+      if (symbol !== "*" || numbers.length !== 2) {
+        return 0;
+      }
+      return numbers[0] * numbers[1];
+    })
+  );
 }
 
 export default createSolverWithLineArray(async (lines) => {
-  // Turn lines into a 2D map
-  const schematic = lines.map((line) => line.split(""));
+  const symbolMap = parse(lines);
 
-  const height = schematic.length;
-  const width = schematic[0].length;
-
-  let first = 0;
-
-  // gearMap is a map of coords (e.g. 3,1) to an array of numbers that are touching that gear
-  const gearMap: Map<string, Array<number>> = new Map();
-
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const startIndex = x;
-      let endIndex = x;
-
-      // While the character is a digit we keep moving the index (until it is no longer a digit)
-      while (isDigit(schematic[y][endIndex])) {
-        endIndex++;
-      }
-
-      // if endIndex was not moved it means we encountered zero digits, thus we can just continue
-      if (startIndex === endIndex) {
-        continue;
-      }
-
-      // Update our loop variable to the index we moved to
-      x = endIndex;
-
-      // indicesToCheck will be an array of the indices that compose a bounding box around the found number
-      // we do not add out of bounds indices
-      const indicesToCheck: Array<[number, number]> = [];
-
-      if (startIndex > 0) {
-        indicesToCheck.push([y, startIndex - 1]);
-      }
-      if (endIndex < width - 1) {
-        indicesToCheck.push([y, endIndex]);
-      }
-
-      const rowCheckStart = Math.max(0, startIndex - 1);
-      const rowCheckEnd = Math.min(width, endIndex + 1);
-
-      for (let i = rowCheckStart; i < rowCheckEnd; i++) {
-        if (y > 0) {
-          indicesToCheck.push([y - 1, i]);
-        }
-        if (y < height - 1) {
-          indicesToCheck.push([y + 1, i]);
-        }
-      }
-
-      // Touches will be an array of everything this number is touching
-      const touches = indicesToCheck.map(([y, x]) => ({
-        c: schematic[y][x],
-        x,
-        y,
-      }));
-      const touchingSymbols = touches.filter(({ c }) => c !== ".");
-
-      if (touchingSymbols.length > 0) {
-        const number = Number.parseInt(
-          schematic[y].slice(startIndex, endIndex).join(""),
-          10
-        );
-
-        first += number;
-
-        const touchingGears = touchingSymbols.filter(({ c }) => c === "*");
-        for (const touchingGear of touchingGears) {
-          const coords = `${touchingGear.x},${touchingGear.y}`;
-          const currentNumbers = gearMap.get(coords) || [];
-          currentNumbers.push(number);
-          gearMap.set(coords, currentNumbers);
-        }
-      }
-    }
-  }
-
-  let second = 0;
-
-  for (const numbers of gearMap.values()) {
-    if (numbers.length !== 2) {
-      continue;
-    }
-
-    second += numbers[0] * numbers[1];
-  }
-
-  return { first, second };
+  return {
+    first: solveFirst(symbolMap),
+    second: solveSecond(symbolMap),
+  };
 });
