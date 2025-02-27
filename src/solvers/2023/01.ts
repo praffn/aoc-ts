@@ -1,89 +1,50 @@
+import { sum } from "../../lib/iter";
 import { createSolverWithLineArray } from "../../solution";
 
-const numbers = {
-  one: 1,
-  two: 2,
-  three: 3,
-  four: 4,
-  five: 5,
-  six: 6,
-  seven: 7,
-  eight: 8,
-  nine: 9,
+const cardinalReplacements = {
+  one: "o1e",
+  two: "t2o",
+  three: "t3e",
+  four: "f4r",
+  five: "f5e",
+  six: "s6x",
+  seven: "s7n",
+  eight: "e8t",
+  nine: "n9e",
 };
 
-function isDigit(c: string): boolean {
-  return c >= "0" && c <= "9";
+/**
+ * Replaces all occurrences of cardinal number ("one", "four" etc) with the
+ * numeric value ("1", "4" etc). Keeps the first and last letter of the number
+ * since those letters can be part of subsequent replacements
+ */
+function replaceCardinals(line: string) {
+  for (const [cardinal, replacement] of Object.entries(cardinalReplacements)) {
+    line = line.replaceAll(cardinal, replacement);
+  }
+  return line;
 }
 
-function findFirstAndLastDigit(input: string): number {
-  let first = 0;
-  let second = 0;
-
-  for (const c of input) {
-    if (isDigit(c)) {
-      first = c.charCodeAt(0) - 48;
-      break;
-    }
-  }
-
-  for (let i = input.length - 1; i >= 0; i--) {
-    if (isDigit(input[i])) {
-      second = input[i].charCodeAt(0) - 48;
-      break;
-    }
-  }
-
-  return first * 10 + second;
+/**
+ * Combines the first and last digit in the string, and returns their numeric
+ * value. If no digits in the string 0 is returned
+ */
+function combineFirstAndLastDigit(line: string) {
+  const digits = line.replace(/[A-Za-z]/g, "").split("");
+  if (digits.length === 0) return 0;
+  return +(digits.at(0)! + digits.at(-1)!);
 }
 
-function findFirstNumber(input: string): number {
-  for (let i = 0; i < input.length; i++) {
-    if (isDigit(input[i])) {
-      return Number.parseInt(input[i], 10);
-    }
-    const slice = input.slice(i);
-    for (const [word, number] of Object.entries(numbers)) {
-      if (slice.startsWith(word)) {
-        return number;
-      }
-    }
-  }
-
-  throw new Error(`Could not find a number in ${input}`);
-}
-
-function findLastNumber(input: string): number {
-  for (let i = input.length - 1; i >= 0; i--) {
-    if (isDigit(input[i])) {
-      return Number.parseInt(input[i], 10);
-    }
-
-    const slice = input.slice(i - input.length);
-
-    for (const [word, number] of Object.entries(numbers)) {
-      if (slice.startsWith(word)) {
-        return number;
-      }
-    }
-  }
-
-  throw new Error(`Could not find a number in ${input}`);
+/**
+ * Returns the sum of the first and last digit of each line in the input
+ */
+function calibrate(input: Array<string>) {
+  return sum(input.map(combineFirstAndLastDigit));
 }
 
 export default createSolverWithLineArray(async (input) => {
-  const first = input.reduce((acc, line) => {
-    return acc + findFirstAndLastDigit(line);
-  }, 0);
-
-  const second = input.reduce((acc, line) => {
-    const a = findFirstNumber(line);
-    const b = findLastNumber(line);
-    return a * 10 + b + acc;
-  }, 0);
-
   return {
-    first,
-    second,
+    first: calibrate(input),
+    second: calibrate(input.map(replaceCardinals)),
   };
 });
