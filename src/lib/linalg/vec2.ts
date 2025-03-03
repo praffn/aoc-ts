@@ -41,6 +41,10 @@ export function scale(a: Vec2, f: number): Vec2 {
   return makeVec2(a.x * f, a.y * f);
 }
 
+export function cross(a: Vec2, b: Vec2): number {
+  return a.x * b.y - a.y * b.x;
+}
+
 export function mod(a: Vec2, m: Vec2): Vec2 {
   return makeVec2(scalarMod(a.x, m.x), scalarMod(a.y, m.y));
 }

@@ -52,6 +52,22 @@ describe("linalg/vec2", () => {
     });
   });
 
+  describe("cross", () => {
+    it("should return the cross product of two vectors", (t) => {
+      const tests = [
+        [makeVec2(1, 0), makeVec2(0, 1), 1],
+        [makeVec2(0, 1), makeVec2(1, 0), -1],
+        [makeVec2(2, 2), makeVec2(4, 4), 0],
+        [makeVec2(2, 2), makeVec2(-4, -4), 0],
+        [makeVec2(3, 5), makeVec2(7, 2), -29],
+      ] as const;
+
+      for (const [a, b, expected] of tests) {
+        t.assert.equal(a.x * b.y - a.y * b.x, expected);
+      }
+    });
+  });
+
   describe("equals", () => {
     it("should return true if two vectors are equal", (t) => {
       const a = makeVec2(3, 6);
