@@ -112,6 +112,13 @@ export class Array2D<T> {
     return this.#data[this.#index(x, y)];
   }
 
+  getOr(x: number, y: number, defaultValue: T): T {
+    if (!this.isInBounds(x, y)) {
+      return defaultValue;
+    }
+    return this.#data[this.#index(x, y)];
+  }
+
   set(x: number, y: number, value: T) {
     if (!this.isInBounds(x, y)) {
       throw new Error("Out of bounds");
