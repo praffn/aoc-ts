@@ -9,7 +9,6 @@ type BoundingBox = {
 
 const re = /x=(-?\d+)\.\.(-?\d+), y=(-?\d+)\.\.(-?\d+)/;
 function parse(input: string): BoundingBox {
-  console.log(input);
   const [, minX, maxX, minY, maxY] = input.match(re)!;
   return {
     min: makeVec2(+minX, +minY),
