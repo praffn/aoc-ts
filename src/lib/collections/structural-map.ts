@@ -1,4 +1,4 @@
-type PrimitiveKey = string | number | symbol;
+type PrimitiveKey = string | number | bigint | symbol;
 type KeyFn<T> = (value: T) => PrimitiveKey;
 
 type StructuralMapEntry<K, V> = {
