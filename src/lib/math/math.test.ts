@@ -1,5 +1,5 @@
 import { describe, it } from "node:test";
-import { divmod, gcd, lcm, mod, modexp } from "./math";
+import { digitConcat, divmod, gcd, lcm, mod, modexp } from "./math";
 
 describe("lib/math/math", () => {
   describe("mod", () => {
@@ -116,6 +116,40 @@ describe("lib/math/math", () => {
           actual,
           expected,
           `expected divmod(${a}, ${b}) to be ${expected}, got ${actual}`
+        );
+      }
+    });
+  });
+
+  describe("digitConcat", () => {
+    it("should return the result of concatenating the digits of two numbers", (t) => {
+      const tests = [
+        // Base 10
+        [123, 456, 10, 123456],
+        [0, 23, 10, 23],
+        [45, 0, 10, 450],
+        [0, 0, 10, 0],
+        // Base 2
+        [0b101, 0b111, 2, 0b101111],
+        [0b0, 0b101, 2, 0b101],
+        [0b101, 0b0, 2, 0b1010],
+        // Base 16
+        [0x123, 0xabc, 16, 0x123abc],
+        [0x0, 0xa8, 16, 0xa8],
+        [0xa8, 0x0, 16, 0xa80],
+        [0x0, 0x0, 16, 0x0],
+      ] as const;
+
+      for (const [a, b, base, expected] of tests) {
+        const actual = digitConcat(a, b, base);
+        t.assert.equal(
+          actual,
+          expected,
+          `expected digitConcat(${a.toString(base)}, ${b.toString(
+            base
+          )}, ${base}) to be ${expected.toString(base)}, got ${actual.toString(
+            base
+          )}`
         );
       }
     });

@@ -54,3 +54,14 @@ export function divmod(
 ): [quotient: number, remainder: number] {
   return [Math.floor(a / b), mod(a, b)];
 }
+
+export function digitConcat(a: number, b: number): number;
+export function digitConcat(a: number, b: number, base: number): number;
+export function digitConcat(a: number, b: number, base = 10): number {
+  let m = base;
+  while (m <= b) {
+    m *= base;
+  }
+
+  return a * m + b;
+}

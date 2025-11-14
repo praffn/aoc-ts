@@ -1,3 +1,4 @@
+import { digitConcat } from "../../lib/math/math";
 import { createSolver } from "../../solution";
 
 function canBeSolved(
@@ -12,19 +13,25 @@ function canBeSolved(
       return currentValue === target;
     }
 
+    // All numbers are positive, so all operations MUST be increasing.
+    // Therefore, if we overshoot early we can stop
+    if (currentValue > target) {
+      return false;
+    }
+
+    // Attempt addition
     if (backtrack(index + 1, currentValue + numbers[index])) {
       return true;
     }
 
+    // Attempt subtraction
     if (backtrack(index + 1, currentValue * numbers[index])) {
       return true;
     }
 
+    // Attempt concatenation (if enabled)
     if (withConcatenation) {
-      const concatenated = parseInt(
-        currentValue.toString() + numbers[index].toString()
-      );
-      if (backtrack(index + 1, concatenated)) {
+      if (backtrack(index + 1, digitConcat(currentValue, numbers[index]))) {
         return true;
       }
     }
