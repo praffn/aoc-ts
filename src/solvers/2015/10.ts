@@ -1,40 +1,43 @@
 import { createSolverWithString } from "../../solution";
 
-export function lookAndSay(input: string) {
-  let result = "";
+export function lookAndSay(input: Uint8Array, rounds: number) {
+  let current = new Uint8Array(input);
 
-  let count = 1;
-  let current = input[0];
+  let maxLen = input.length * 4;
+  let next = new Uint8Array(maxLen);
 
-  for (let i = 1; i < input.length; i++) {
-    if (input[i] === current) {
-      count++;
-    } else {
-      result += count.toString() + current;
-      count = 1;
-      current = input[i];
+  for (let r = 0; r < rounds; r++) {
+    let write = 0;
+    let i = 0;
+
+    while (i < current.length) {
+      const ch = current[i];
+      let count = 1;
+
+      while (i + count < current.length && current[i + count] === ch) {
+        count++;
+      }
+
+      next[write++] = 48 + count;
+      next[write++] = ch;
+
+      i += count;
     }
+
+    current = next.subarray(0, write);
+    next = new Uint8Array(write * 2);
   }
 
-  result += count.toString() + current;
-
-  return result;
-}
-
-function run(input: string, times: number) {
-  for (let i = 0; i < times; i++) {
-    input = lookAndSay(input);
-  }
-
-  return input;
+  return current;
 }
 
 export default createSolverWithString(async (input) => {
-  const after40Times = run(input, 40);
-  const after50Times = run(after40Times, 10);
+  const bytes = new Uint8Array([...input].map((c) => c.charCodeAt(0)));
+  const after40rounds = lookAndSay(bytes, 40);
+  const after50rounds = lookAndSay(after40rounds, 10);
 
   return {
-    first: after40Times.length,
-    second: after50Times.length,
+    first: after40rounds.length,
+    second: after50rounds.length,
   };
 });

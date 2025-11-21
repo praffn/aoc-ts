@@ -11,7 +11,10 @@ test("2015.10", async (t) => {
   ];
 
   for (const [input, expected] of tests) {
-    const actual = lookAndSay(input);
-    t.assert.equal(actual, expected);
+    const inputBytes = new Uint8Array([...input].map((c) => c.charCodeAt(0)));
+    const resultBytes = lookAndSay(inputBytes, 1);
+    const resultString = new TextDecoder().decode(resultBytes);
+
+    t.assert.equal(resultString, expected);
   }
 });
