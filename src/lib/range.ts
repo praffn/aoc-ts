@@ -44,4 +44,10 @@ export class Range {
   fullyContains(other: Range): boolean {
     return this.contains(other.#start) && this.contains(other.#end - 1);
   }
+
+  *[Symbol.iterator]() {
+    for (let i = this.#start; i < this.#end; i++) {
+      yield i;
+    }
+  }
 }
