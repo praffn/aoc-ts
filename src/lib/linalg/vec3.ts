@@ -34,6 +34,10 @@ export function lte(a: Vec3, b: Vec3): boolean {
   return a.x <= b.x && a.y <= b.y && a.z <= b.z;
 }
 
+export function magnitudeSquared(v: Vec3): number {
+  return v.x * v.x + v.y * v.y + v.z * v.z;
+}
+
 export function magnitude(v: Vec3): number {
   return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 }
