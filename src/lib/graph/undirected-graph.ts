@@ -207,19 +207,38 @@ export class UndirectedGraph<V> {
     }
   }
 
+  *isolatedVertices() {
+    for (const vertex of this.vertices()) {
+      if (this.neighbors(vertex).next().done) {
+        yield vertex;
+      }
+    }
+  }
+
+  hasIsolatedVertices() {
+    if (this.isolatedVertices().next().done) {
+      return false;
+    }
+    return true;
+  }
+
   *connectedComponents() {
     const visited = new Set<V | string>();
 
     for (const vertex of this.vertices()) {
-      if (visited.has(vertex)) {
-        continue;
+      const vertexKey = this.key(vertex);
+      if (visited.has(vertexKey)) {
+        continue; // Already part of a component
       }
 
       const component = new Set<V>();
+
       this.depthFirstSearch(vertex, (v) => {
         const key = this.key(v);
-        visited.add(key);
-        component.add(v);
+        if (!visited.has(key)) {
+          visited.add(key);
+          component.add(v);
+        }
       });
 
       yield component;
